@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>agile · Reference Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#6b6b6b;
+    --surface:#fafaf8;--surface2:#f2f0ea;--surface3:#e8e4da;
+    --accent:#1a3a5c;--accent2:#2d6a9f;--accent-light:#ddeeff;
+    --green:#0d5c3a;--green-light:#d4f0e3;
+    --amber:#7a4500;--amber-light:#fff0d4;
+    --red:#6b1a1a;--red-light:#ffe8e8;
+    --purple:#3b1a6b;--purple-light:#ede8f9;
+    --mono:'DM Mono',monospace;
+    --display:'Syne',sans-serif;
+    --body:'Lora',serif;
+  }
+  body{background:var(--surface);color:var(--ink);font-family:var(--body);line-height:1.7;font-size:16px;min-height:100vh;}
+
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:var(--surface);border-bottom:1px solid var(--surface3);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 2.5rem;height:56px;
+  }
+  .nav-brand{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-0.5px;color:var(--ink);}
+  .nav-badge{background:var(--ink);color:var(--surface);font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:20px;text-decoration:none;}
+
+  .hero{
+    padding:5rem 2.5rem 3.5rem;
+    max-width:760px;margin:0 auto;text-align:center;
+  }
+  .crumb{font-family:var(--mono);font-size:12px;letter-spacing:0.1em;color:var(--ink3);margin-bottom:1.25rem;}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-0.03em;color:var(--ink);margin-bottom:1rem;}
+  h1 em{font-style:normal;color:var(--accent2);}
+  .hero-sub{font-size:1.05rem;color:var(--ink2);max-width:480px;margin:0 auto 2.5rem;line-height:1.65;}
+
+  .modules{max-width:860px;margin:0 auto;padding:0 2.5rem 5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
+
+  .module-card{
+    background:white;border:1px solid var(--surface3);border-radius:10px;
+    padding:1.5rem 1.5rem 1.25rem;text-decoration:none;display:block;
+    transition:all 0.15s;position:relative;overflow:hidden;
+  }
+  .module-card:hover{border-color:var(--ink3);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.07);}
+  .module-card.available{border-left:3px solid var(--accent2);}
+  .module-card.coming-soon{opacity:0.6;cursor:default;}
+  .module-card.coming-soon:hover{transform:none;box-shadow:none;}
+
+  .module-tag{
+    display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    padding:3px 8px;border-radius:4px;margin-bottom:12px;
+  }
+  .tag-live{background:var(--accent-light);color:var(--accent);}
+  .tag-soon{background:var(--surface2);color:var(--ink3);}
+
+  .module-icon{font-size:24px;margin-bottom:10px;display:block;}
+  .module-title{font-family:var(--display);font-weight:700;font-size:17px;color:var(--ink);margin-bottom:5px;}
+  .module-path{font-family:var(--mono);font-size:11px;color:var(--accent2);margin-bottom:8px;}
+  .module-desc{font-size:13px;color:var(--ink3);line-height:1.55;}
+
+  .module-arrow{
+    position:absolute;top:1.5rem;right:1.25rem;
+    font-family:var(--display);font-size:18px;color:var(--ink3);
+    transition:transform 0.15s;
+  }
+  .module-card:hover .module-arrow{transform:translate(2px,-2px);}
+
+  .section-label{
+    max-width:860px;margin:0 auto 1rem;padding:0 2.5rem;
+    font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);
+  }
+
+  footer{
+    border-top:1px solid var(--surface3);
+    padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;
+  }
+  footer p{font-family:var(--mono);font-size:12px;color:var(--ink3);}
+  footer a{color:var(--ink2);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">agile</span>
+  <a href="https://github.com/sathishkumaralagiri/agile" class="nav-badge">GitHub ↗</a>
+</nav>
+
+<section class="hero">
+  <p class="crumb">sathishkumaralagiri.github.io / agile</p>
+  <h1>The <em>Agile</em><br>Reference Library</h1>
+  <p class="hero-sub">An open-source collection of practitioner guides covering every aspect of agile delivery — metrics, ceremonies, frameworks, and more.</p>
+</section>
+
+<p class="section-label">Available now</p>
+<div class="modules">
+
+  <a class="module-card available" href="./agile-metrics/">
+    <span class="module-tag tag-live">Live</span>
+    <span class="module-icon">📊</span>
+    <div class="module-title">Agile Metrics &amp; Estimation</div>
+    <div class="module-path">agile / agile-metrics</div>
+    <div class="module-desc">Velocity, cycle time, lead time, throughput, burndowns, escaped defects, story points, Planning Poker, PERT, Monte Carlo, and more.</div>
+    <span class="module-arrow">↗</span>
+  </a>
+
+</div>
+
+<p class="section-label">Coming soon</p>
+<div class="modules" style="padding-top:0;">
+
+  <div class="module-card coming-soon">
+    <span class="module-tag tag-soon">Planned</span>
+    <span class="module-icon">🏃</span>
+    <div class="module-title">Scrum Framework</div>
+    <div class="module-path">agile / scrum</div>
+    <div class="module-desc">Roles, events, artifacts, and the Scrum values — a complete practitioner reference.</div>
+  </div>
+
+  <div class="module-card coming-soon">
+    <span class="module-tag tag-soon">Planned</span>
+    <span class="module-icon">🔲</span>
+    <div class="module-title">Kanban</div>
+    <div class="module-path">agile / kanban</div>
+    <div class="module-desc">WIP limits, classes of service, replenishment, and cadence design.</div>
+  </div>
+
+  <div class="module-card coming-soon">
+    <span class="module-tag tag-soon">Planned</span>
+    <span class="module-icon">🎭</span>
+    <div class="module-title">Ceremonies &amp; Templates</div>
+    <div class="module-path">agile / ceremonies</div>
+    <div class="module-desc">Facilitation guides and templates for sprint planning, retrospectives, and refinement.</div>
+  </div>
+
+</div>
+
+<footer>
+  <p>sathishkumaralagiri.github.io/agile · <a href="agile-metrics/LICENSE" style="color:var(--ink2);">CC BY 4.0</a> · 2026</p>
+  <p><a href="https://github.com/sathishkumaralagiri/agile">Contribute on GitHub ↗</a></p>
+</footer>
+
+</body>
+</html>
