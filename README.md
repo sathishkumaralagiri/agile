@@ -14,7 +14,7 @@
 | Module | Status | Description |
 |--------|--------|-------------|
 | [agile-metrics](./agile-metrics/) | ✅ Live | Metrics, estimation techniques, formulas, and anti-patterns |
-| agile-scrum | 🔜 Planned | Roles, events, artifacts, and Scrum values |
+| [agile-scrum](./agile-scrum/) | ✅ Live | Roles, events, artifacts, values, and anti-patterns |
 | agile-kanban | 🔜 Planned | WIP limits, classes of service, and cadence design |
 | agile-ceremonies | 🔜 Planned | Facilitation guides and templates |
 
