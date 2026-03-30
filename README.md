@@ -16,7 +16,7 @@
 | [agile-metrics](./agile-metrics/) | ✅ Live | Metrics, estimation techniques, formulas, and anti-patterns |
 | [agile-scrum](./agile-scrum/) | ✅ Live | Roles, events, artifacts, values, and anti-patterns |
 | [agile-kanban](./agile-kanban/) | ✅ Live | WIP limits, flow, classes of service, cadences, and metrics |
-| agile-ceremonies | 🔜 ~Q2 2026 | Facilitation guides and templates for ceremonies |
+| [agile-ceremonies](./agile-ceremonies/) | ✅ Live | Facilitation guides and templates for all ceremonies |
 
 ---
 
