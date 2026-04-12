@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agile Maturity Model Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .level-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin:.75rem 0}
+  .level-card .lh{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
+  .level-badge{font-family:'Courier New',monospace;font-size:.75rem;font-weight:bold;padding:.3rem .75rem;border-radius:4px;color:#000}
+  .l1{background:#ef4444}.l2{background:#f97316}.l3{background:#eab308}.l4{background:#22c55e}.l5{background:#10b981}
+  .level-title{font-weight:600;font-size:1rem}
+  .level-subtitle{font-size:.8rem;color:var(--muted)}
+  .level-content{font-size:.85rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-maturity</span>
+  <span class="spacer"></span>
+  <a href="#levels">5 Levels</a><a href="#assessment">Self-Assessment</a><a href="#dimensions">Dimensions</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-maturity" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-maturity · v1.0</div>
+  <h1>Agile <em>Maturity Model</em></h1>
+  <p>Team self-assessment frameworks from ad-hoc to high-performing — how to measure where you are, and what to work on next.</p>
+  <div class="hero-links">
+    <a href="#levels">5 Levels →</a><a href="#assessment" class="ghost">Self-Assessment</a><a href="#dimensions" class="ghost">Dimensions</a><a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">5</div><div class="label">Maturity levels</div></div>
+  <div class="stat"><div class="num">8</div><div class="label">Assessment dimensions</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Team per session</div></div>
+  <div class="stat"><div class="num">∞</div><div class="label">Improvement ceiling</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#what">What maturity models do</a></li><li><a href="#caution">Use with caution</a></li></ul>
+  <h3>The Model</h3>
+  <ul>
+    <li><a href="#levels">5 maturity levels</a></li>
+    <li><a href="#dimensions">8 assessment dimensions</a></li>
+  </ul>
+  <h3>Assessment</h3>
+  <ul><li><a href="#assessment">Running a self-assessment</a></li><li><a href="#scoring">Scoring and readout</a></li><li><a href="#roadmap">Improvement roadmap</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="what">
+  <div class="section-label">Foundation</div>
+  <h2>What Maturity Models <em>Do</em></h2>
+  <p>An agile maturity model is a tool for structured self-reflection — not a grading system. It helps teams understand where they are in their agile journey, identify the most impactful improvements, and create a shared language for discussing team health.</p>
+  <p>The model covers process, engineering practices, culture, and delivery quality. A team that scores well on all dimensions has usually earned it through genuine improvement — not through coaching for the assessment.</p>
+  <div class="callout"><strong>Maturity models are for the team, not for management.</strong> The moment results are reported upward as KPIs, teams will optimise for the score, not for genuine improvement. Keep results internal.</div>
+</div>
+
+<div class="section" id="levels">
+  <div class="section-label">The Model</div>
+  <h2>The 5 <em>Maturity Levels</em></h2>
+
+  <div class="level-card">
+    <div class="lh"><div class="level-badge l1">Level 1</div><div><div class="level-title">Ad-hoc / Chaotic</div><div class="level-subtitle">No consistent process; heroics dominate</div></div></div>
+    <div class="level-content">Sprints exist in name only. No Definition of Done. Retrospectives skipped. Releases are high-risk, manual events. The team firefights constantly. Estimates are meaningless. Leadership pressure drives all decisions.</div>
+  </div>
+
+  <div class="level-card">
+    <div class="lh"><div class="level-badge l2">Level 2</div><div><div class="level-title">Repeatable</div><div class="level-subtitle">Basic ceremonies in place; results variable</div></div></div>
+    <div class="level-content">Sprint cadence established. PO, SM, and team roles filled. Sprint Planning and Retrospectives happen consistently. Definition of Done exists but has gaps. Velocity is tracked but not used wisely. Releases still stressful but scheduled. Dependencies managed ad hoc.</div>
+  </div>
+
+  <div class="level-card">
+    <div class="lh"><div class="level-badge l3">Level 3</div><div><div class="level-title">Defined</div><div class="level-subtitle">Consistent practices; improving predictability</div></div></div>
+    <div class="level-content">Strong DoD enforced. Backlog refinement happens weekly. Sprint Goals are meaningful and met 70%+ of the time. CI/CD pipeline exists; deploys are relatively safe. Code reviews are standard. Team retrospectives produce committed improvements. Cycle time tracked. Escaped defect rate declining.</div>
+  </div>
+
+  <div class="level-card">
+    <div class="lh"><div class="level-badge l4">Level 4</div><div><div class="level-title">Managed</div><div class="level-subtitle">Data-driven decisions; high predictability</div></div></div>
+    <div class="level-content">DORA metrics measured and improving. Lead time &lt;1 week. Change failure rate &lt;10%. Flow metrics (cycle time, throughput) used for forecasting. Team self-organises on all technical decisions. PO and team deeply aligned. Stakeholder trust is high. Continuous deployment or very frequent releases. Blameless post-mortems standard.</div>
+  </div>
+
+  <div class="level-card">
+    <div class="lh"><div class="level-badge l5">Level 5</div><div><div class="level-title">Optimising</div><div class="level-subtitle">Continuous innovation; industry-leading delivery</div></div></div>
+    <div class="level-content">Elite DORA performance. Multiple production deploys per day. Team drives its own improvement agenda. Engineers contribute to organisational-level improvements. Psychological safety measured and managed. Tech debt proactively managed. Team contributes to hiring and culture. Innovative practices regularly piloted and shared externally.</div>
+  </div>
+</div>
+
+<div class="section" id="dimensions">
+  <div class="section-label">The Model</div>
+  <h2>8 Assessment <em>Dimensions</em></h2>
+  <table>
+    <tr><th>Dimension</th><th>What it measures</th><th>Key indicators</th></tr>
+    <tr><td>Process &amp; Ceremonies</td><td>Are Agile events run effectively?</td><td>Sprint Goals met, retros producing actions, DoD enforced</td></tr>
+    <tr><td>Product &amp; Backlog</td><td>Is the backlog healthy and prioritised?</td><td>Refined PBIs, clear ACs, PO accessible and empowered</td></tr>
+    <tr><td>Delivery &amp; Predictability</td><td>Does the team deliver reliably?</td><td>Sprint goal % met, velocity stability, release frequency</td></tr>
+    <tr><td>Engineering Practices</td><td>Is the codebase maintainable and safe?</td><td>Test coverage, CI/CD, code review quality, tech debt level</td></tr>
+    <tr><td>DevOps &amp; Deployment</td><td>How fast and safe are deployments?</td><td>DORA metrics, deployment frequency, MTTR</td></tr>
+    <tr><td>Collaboration &amp; Team Health</td><td>Does the team work well together?</td><td>Psychological safety, knowledge sharing, cross-skilling</td></tr>
+    <tr><td>Stakeholder Alignment</td><td>Is there trust between team and business?</td><td>Sprint Review feedback quality, stakeholder NPS, PO relationship</td></tr>
+    <tr><td>Continuous Improvement</td><td>Does the team get better every sprint?</td><td>Retro action completion rate, learning culture, experimentation</td></tr>
+  </table>
+</div>
+
+<div class="section" id="assessment">
+  <div class="section-label">Assessment</div>
+  <h2>Running a <em>Self-Assessment</em></h2>
+  <pre>Preparation (before the session)
+→ Share the dimensions and levels with the team 1 week ahead
+→ Ask everyone to individually score each dimension 1–5
+→ 45–90 min session; whole team including PO and SM
+
+Session format
+0–10 min   → context: "This is for us, not for management"
+10–30 min  → individual scoring (silent; sticky notes or digital tool)
+30–60 min  → reveal scores per dimension; discuss gaps &gt;1 point
+60–80 min  → agree on top 3 dimensions to improve
+80–90 min  → assign owners and timebox next actions
+
+Scoring per dimension
+1 = Level 1 behaviours dominate
+2 = Mostly Level 2; some Level 3 behaviours starting
+3 = Solidly Level 3; occasional Level 4 moments
+4 = Consistently Level 4
+5 = Level 5; high-performing across this dimension</pre>
+  <div class="callout info"><strong>Run the assessment every quarter.</strong> Compare scores over time — trend matters more than absolute score. A team improving from 2→3 across all dimensions is outperforming a static team stuck at 4.</div>
+</div>
+
+<div class="section" id="roadmap">
+  <div class="section-label">Assessment</div>
+  <h2>Improvement <em>Roadmap</em></h2>
+  <pre>From Level 1 → 2 (first 30 days)
+→ Establish consistent sprint cadence
+→ Fill all three Scrum roles
+→ Create a basic Definition of Done (5–6 items)
+→ Hold Sprint Planning and Retrospectives every sprint
+
+From Level 2 → 3 (days 30–90)
+→ Make Sprint Goals specific and measurable
+→ Enforce the DoD — return undone work to backlog
+→ Start weekly backlog refinement sessions
+→ Instrument CI/CD and automate basic test suite
+→ Track and action every Retrospective item
+
+From Level 3 → 4 (months 3–9)
+→ Implement DORA metric tracking
+→ Move to continuous deployment or high-frequency releases
+→ Use flow metrics (cycle time, throughput) for forecasting
+→ Introduce blameless post-mortems for all P1/P2 incidents
+→ Allocate 15–20% capacity for tech debt
+
+From Level 4 → 5 (months 9–18+)
+→ Multiple production deploys per day
+→ Team drives its own improvement agenda; external coaching optional
+→ Measure and actively manage psychological safety
+→ Contribute innovations to the broader organisation</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Maturity as management KPI</td><td>Teams inflate scores; assessment loses value</td><td>Results stay with the team; management sees only improvement actions</td></tr>
+    <tr><td>Assessing quarterly without acting</td><td>Same scores every quarter; no improvement</td><td>Assessment must produce 3 actions with owners and timebox</td></tr>
+    <tr><td>Targeting level 5 immediately</td><td>Team skips foundational practices; collapses</td><td>Progress level by level; don't skip foundations</td></tr>
+    <tr><td>External assessor only</td><td>Team doesn't own the results; feels evaluated</td><td>Team self-assesses; external coach facilitates if needed</td></tr>
+    <tr><td>Process maturity without outcomes</td><td>Level 3 process, Level 1 delivery results</td><td>Outcomes (DORA, customer satisfaction) must improve with maturity</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Maturity <em>Cheat Sheet</em></h2>
+  <pre>5 Levels
+1 — Ad-hoc: no consistent process; heroics
+2 — Repeatable: ceremonies in place; variable results
+3 — Defined: consistent practices; improving predictability
+4 — Managed: data-driven; high predictability; strong DORA
+5 — Optimising: elite delivery; team drives own improvement
+
+8 Dimensions
+Process &amp; Ceremonies · Product &amp; Backlog · Delivery &amp; Predictability
+Engineering Practices · DevOps &amp; Deployment · Collaboration &amp; Team Health
+Stakeholder Alignment · Continuous Improvement
+
+Assessment rules
+→ Self-assessment by the team; not a management report
+→ Every dimension scored 1–5 individually, then discussed
+→ Top 3 gaps → improvement actions with owners
+→ Run quarterly; track trends, not just scores
+
+Quick level checks
+Level 2+: Are ceremonies happening consistently?
+Level 3+: Is the DoD enforced? Are Sprint Goals met 70%+?
+Level 4+: Are DORA metrics measured and improving?
+Level 5+: Is the team driving innovation beyond its own backlog?</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-maturity · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

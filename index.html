@@ -1,279 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>agile · Reference Library</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Agile Reference Library</title>
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#6b6b6b;
-    --surface:#fafaf8;--surface2:#f2f0ea;--surface3:#e8e4da;
-    --accent:#1a3a5c;--accent2:#2d6a9f;--accent-light:#ddeeff;
-    --green:#0d5c3a;--green-light:#d4f0e3;
-    --amber:#7a4500;--amber-light:#fff0d4;
-    --purple:#3b1a6b;--purple-light:#ede8f9;
-    --teal:#0a5c58;--teal-light:#d4f0ee;
-    --mono:'DM Mono',monospace;
-    --display:'Syne',sans-serif;
-    --body:'Lora',serif;
-  }
-  body{background:var(--surface);color:var(--ink);font-family:var(--body);line-height:1.7;font-size:16px;min-height:100vh;}
-
-  nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--surface3);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:56px;}
-  .nav-brand{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-0.5px;color:var(--ink);}
-  .nav-links{display:flex;gap:1.75rem;align-items:center;}
-  .nav-links a{font-family:var(--display);font-size:12px;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;text-decoration:none;color:var(--ink3);transition:color 0.15s;}
-  .nav-links a:hover{color:var(--ink);}
-  .nav-badge{background:var(--ink);color:var(--surface);font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:20px;text-decoration:none;text-transform:none;letter-spacing:0;}
-
-  .hero{padding:5rem 2.5rem 4rem;max-width:700px;margin:0 auto;text-align:center;border-bottom:1px solid var(--surface3);}
-  .crumb{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:var(--ink3);margin-bottom:1.25rem;}
-  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5vw,3.6rem);line-height:1.05;letter-spacing:-0.03em;color:var(--ink);margin-bottom:1rem;}
-  h1 em{font-style:normal;color:var(--accent2);}
-  .hero-sub{font-size:1.05rem;color:var(--ink2);max-width:480px;margin:0 auto 2rem;line-height:1.65;}
-  .hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--surface3);}
-  .stat{font-family:var(--display);text-align:center;}
-  .stat-num{font-size:1.5rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;}
-  .stat-label{font-size:11px;color:var(--ink3);margin-top:2px;}
-
-  .body{max-width:980px;margin:0 auto;padding:0 2.5rem 5rem;}
-
-  .category{margin-top:3.5rem;}
-  .category-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1.5px solid var(--surface3);}
-  .category-icon{font-size:17px;}
-  .category-title{font-family:var(--display);font-weight:800;font-size:1rem;letter-spacing:-0.01em;}
-  .category-desc{font-family:var(--body);font-size:13px;color:var(--ink3);margin-left:auto;}
-
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
-
-  .card{background:white;border:1px solid var(--surface3);border-radius:10px;padding:1.25rem 1.25rem 1rem;text-decoration:none;display:block;transition:all 0.15s;position:relative;overflow:hidden;}
-  .card.live{border-left:3px solid var(--accent2);}
-  .card.soon{opacity:0.45;cursor:default;pointer-events:none;}
-  .card.live:hover{border-color:var(--ink3);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.07);}
-
-  .card-icon{font-size:20px;margin-bottom:10px;display:block;}
-  .card-title{font-family:var(--display);font-weight:700;font-size:14px;color:var(--ink);margin-bottom:4px;padding-right:18px;}
-  .card-path{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;}
-  .card-desc{font-size:12px;color:var(--ink3);line-height:1.55;}
-  .card-arrow{position:absolute;top:1.1rem;right:1rem;font-size:15px;color:var(--ink3);transition:transform 0.15s;}
-  .card.live:hover .card-arrow{transform:translate(2px,-2px);}
-
-  /* Per-category accent colours */
-  .foundations .card.live{border-left-color:var(--accent2);}
-  .scaling      .card.live{border-left-color:var(--amber);}
-  .engineering  .card.live{border-left-color:var(--green);}
-  .measurement  .card.live{border-left-color:var(--purple);}
-  .people       .card.live{border-left-color:var(--teal);}
-
-  .foundations .category-title{color:var(--accent);}
-  .scaling      .category-title{color:var(--amber);}
-  .engineering  .category-title{color:var(--green);}
-  .measurement  .category-title{color:var(--purple);}
-  .people       .category-title{color:var(--teal);}
-
-  footer{border-top:1px solid var(--surface3);padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;}
-  footer p{font-family:var(--mono);font-size:12px;color:var(--ink3);}
-  footer a{color:var(--ink2);text-decoration:none;}
-
-  @media(max-width:640px){
-    .hero{padding:3rem 1.25rem 2.5rem;}.body{padding:0 1.25rem 3rem;}
-    nav{padding:0 1.25rem;}.nav-links a:not(.nav-badge){display:none;}
-    .hero-stats{gap:1.5rem;flex-wrap:wrap;}footer{flex-direction:column;gap:1rem;text-align:center;}
-    .category-desc{display:none;}
-  }
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:6rem 2rem 4rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border);text-align:center}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:400;line-height:1.1;margin-bottom:1.5rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.15rem;max-width:60ch;margin:0 auto 2.5rem}
+  .stats{display:flex;justify-content:center;flex-wrap:wrap;gap:3rem;padding:2.5rem 2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat{text-align:center}.stat .num{font-size:2.5rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace;line-height:1}
+  .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem}
+  .section{max-width:900px;margin:0 auto;padding:3rem 2rem}
+  .section-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
+  .section-icon{font-size:1.5rem}
+  .section-title{font-size:1.25rem;font-weight:600}
+  .section-desc{font-size:.85rem;color:var(--muted)}
+  .module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:3rem}
+  .module{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;display:flex;flex-direction:column;gap:.5rem;transition:border-color .2s}
+  .module:hover{border-color:var(--accent)}
+  .module .mod-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+  .module .mod-icon{font-size:1.5rem}
+  .module .mod-badge{font-family:'Courier New',monospace;font-size:.6rem;padding:.15rem .5rem;border-radius:3px;white-space:nowrap;font-weight:bold}
+  .badge-live{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+  .module .mod-title{font-size:.95rem;font-weight:600}
+  .module .mod-path{font-family:'Courier New',monospace;font-size:.65rem;color:var(--muted)}
+  .module .mod-desc{font-size:.8rem;color:var(--muted);line-height:1.5;flex:1}
+  .module a.mod-link{display:inline-block;margin-top:.5rem;font-family:'Courier New',monospace;font-size:.7rem;color:var(--accent)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  .divider{border:none;border-top:1px solid var(--border);max-width:900px;margin:0 auto}
+  @media(max-width:600px){.stats{gap:1.5rem}.module-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-brand">agile</span>
-  <div class="nav-links">
-    <a href="#foundations">Foundations</a>
-    <a href="#scaling">Scaling</a>
-    <a href="#engineering">Engineering</a>
-    <a href="#measurement">Measurement</a>
-    <a href="#people">People</a>
-    <a href="https://github.com/sathishkumaralagiri/agile" class="nav-badge">GitHub ↗</a>
-  </div>
+  <span style="font-family:'Courier New',monospace;font-size:.8rem;color:var(--muted)">sathishkumaralagiri.github.io / agile</span>
+  <span class="spacer"></span>
+  <a href="#foundations">Foundations</a>
+  <a href="#scaling">Scaling</a>
+  <a href="#engineering">Engineering</a>
+  <a href="#measurement">Measurement</a>
+  <a href="#people">People</a>
+  <a href="https://github.com/sathishkumaralagiri/agile" class="gh">GitHub ↗</a>
 </nav>
 
-<section class="hero">
-  <p class="crumb">sathishkumaralagiri.github.io / agile</p>
-  <h1>The <em>Agile</em><br>Reference Library</h1>
-  <p class="hero-sub">An open-source collection of practitioner guides covering every aspect of agile delivery — from team-level practices to organisational scaling.</p>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Categories</div></div>
-    <div class="stat"><div class="stat-num">19</div><div class="stat-label">Modules planned</div></div>
-    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Live now</div></div>
-    <div class="stat"><div class="stat-num">CC BY</div><div class="stat-label">Open license</div></div>
-  </div>
-</section>
+<div class="hero">
+  <div class="eyebrow">agile</div>
+  <h1>The <em>Agile</em> Reference Library</h1>
+  <p>An open-source collection of practitioner guides covering every aspect of agile delivery — from team-level practices to organisational scaling.</p>
+</div>
 
-<div class="body">
+<div class="stats">
+  <div class="stat"><div class="num">5</div><div class="label">Categories</div></div>
+  <div class="stat"><div class="num">19</div><div class="label">Modules</div></div>
+  <div class="stat"><div class="num">19</div><div class="label">Live now</div></div>
+  <div class="stat"><div class="num">CC BY</div><div class="label">Open license</div></div>
+</div>
 
-  <!-- FOUNDATIONS -->
-  <div class="category foundations" id="foundations">
-    <div class="category-header">
-      <span class="category-icon">🧱</span>
-      <span class="category-title">Foundations</span>
-      <span class="category-desc">Core frameworks and team-level practices</span>
-    </div>
-    <div class="cards">
-      <a class="card live" href="./agile-metrics/">
-        <span class="card-icon">📊</span>
-        <div class="card-title">Agile Metrics &amp; Estimation</div>
-        <div class="card-path">agile / agile-metrics</div>
-        <div class="card-desc">Velocity, cycle time, lead time, throughput, burndowns, story points, Planning Poker, PERT, Monte Carlo.</div>
-        <span class="card-arrow">↗</span>
-      </a>
-      <a class="card live" href="./agile-scrum/">
-        <span class="card-icon">🏃</span>
-        <div class="card-title">Scrum Framework</div>
-        <div class="card-path">agile / agile-scrum</div>
-        <div class="card-desc">Roles, events, artifacts, and the Scrum values — a complete practitioner reference.</div>
-        <span class="card-arrow">↗</span>
-      </a>
-      <a class="card live" href="./agile-kanban/">
-        <span class="card-icon">🔲</span>
-        <div class="card-title">Kanban</div>
-        <div class="card-path">agile / agile-kanban</div>
-        <div class="card-desc">WIP limits, flow, classes of service, cadences, and flow metrics.</div>
-        <span class="card-arrow">↗</span>
-      </a>
-      <a class="card live" href="./agile-ceremonies/">
-        <span class="card-icon">🎭</span>
-        <div class="card-title">Ceremonies &amp; Templates</div>
-        <div class="card-path">agile / agile-ceremonies</div>
-        <div class="card-desc">Facilitation guides and templates for planning, standups, reviews, and retrospectives.</div>
-        <span class="card-arrow">↗</span>
-      </a>
+<!-- FOUNDATIONS -->
+<div class="section" id="foundations">
+  <div class="section-header">
+    <span class="section-icon">🧱</span>
+    <div>
+      <div class="section-title">Foundations</div>
+      <div class="section-desc">Core frameworks and team-level practices</div>
     </div>
   </div>
+  <div class="module-grid">
 
-  <!-- SCALING -->
-  <div class="category scaling" id="scaling">
-    <div class="category-header">
-      <span class="category-icon">🏗</span>
-      <span class="category-title">Scaling</span>
-      <span class="category-desc">Agile at team-of-teams and enterprise level</span>
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">📊</div></div>
+      <div class="mod-title">Agile Metrics &amp; Estimation</div>
+      <div class="mod-path">agile / agile-metrics</div>
+      <div class="mod-desc">Velocity, cycle time, lead time, throughput, burndowns, story points, Planning Poker, PERT, Monte Carlo.</div>
+      <a href="agile-metrics/" class="mod-link">Open →</a>
     </div>
-    <div class="cards">
-      <div class="card soon">
-        <span class="card-icon">🏢</span>
-        <div class="card-title">SAFe</div>
-        <div class="card-path">agile / agile-safe</div>
-        <div class="card-desc">Scaled Agile Framework — PI planning, ARTs, and enterprise agility.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">🔁</span>
-        <div class="card-title">LeSS</div>
-        <div class="card-path">agile / agile-less</div>
-        <div class="card-desc">Large-Scale Scrum — scaling Scrum across multiple teams with minimal overhead.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">🎯</span>
-        <div class="card-title">Shape Up</div>
-        <div class="card-path">agile / agile-shapeup</div>
-        <div class="card-desc">Basecamp's alternative to sprints — appetite, pitches, and the betting table.</div>
-      </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🏃</div></div>
+      <div class="mod-title">Scrum Framework</div>
+      <div class="mod-path">agile / agile-scrum</div>
+      <div class="mod-desc">Roles, events, artifacts, and the Scrum values — a complete practitioner reference.</div>
+      <a href="agile-scrum/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🔲</div></div>
+      <div class="mod-title">Kanban</div>
+      <div class="mod-path">agile / agile-kanban</div>
+      <div class="mod-desc">WIP limits, flow, classes of service, cadences, and flow metrics.</div>
+      <a href="agile-kanban/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🎭</div></div>
+      <div class="mod-title">Ceremonies &amp; Templates</div>
+      <div class="mod-path">agile / agile-ceremonies</div>
+      <div class="mod-desc">Facilitation guides and templates for planning, standups, reviews, and retrospectives.</div>
+      <a href="agile-ceremonies/" class="mod-link">Open →</a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SCALING -->
+<div class="section" id="scaling">
+  <div class="section-header">
+    <span class="section-icon">🏗</span>
+    <div>
+      <div class="section-title">Scaling</div>
+      <div class="section-desc">Agile at team-of-teams and enterprise level</div>
     </div>
   </div>
+  <div class="module-grid">
 
-  <!-- ENGINEERING PRACTICES -->
-  <div class="category engineering" id="engineering">
-    <div class="category-header">
-      <span class="category-icon">⚙️</span>
-      <span class="category-title">Engineering Practices</span>
-      <span class="category-desc">Day-to-day craft and delivery quality</span>
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🏢</div></div>
+      <div class="mod-title">SAFe</div>
+      <div class="mod-path">agile / agile-safe</div>
+      <div class="mod-desc">Scaled Agile Framework — PI planning, ARTs, lean budgeting, and enterprise agility.</div>
+      <a href="agile-safe/" class="mod-link">Open →</a>
     </div>
-    <div class="cards">
-      <div class="card soon">
-        <span class="card-icon">📝</span>
-        <div class="card-title">User Story Writing</div>
-        <div class="card-path">agile / agile-userstories</div>
-        <div class="card-desc">As a / I want / So that, INVEST criteria, acceptance criteria patterns, and story splitting.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">🧹</span>
-        <div class="card-title">Technical Debt Management</div>
-        <div class="card-path">agile / agile-techdebt</div>
-        <div class="card-desc">How to identify, classify, track, and pay down tech debt within sprints.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">✅</span>
-        <div class="card-title">Definition of Done</div>
-        <div class="card-path">agile / agile-dod</div>
-        <div class="card-desc">Building a strong DoD — criteria by team type, anti-patterns, and examples.</div>
-      </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🔁</div></div>
+      <div class="mod-title">LeSS</div>
+      <div class="mod-path">agile / agile-less</div>
+      <div class="mod-desc">Large-Scale Scrum — scaling Scrum across multiple teams with minimal overhead.</div>
+      <a href="agile-less/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🎯</div></div>
+      <div class="mod-title">Shape Up</div>
+      <div class="mod-path">agile / agile-shapeup</div>
+      <div class="mod-desc">Basecamp's alternative to sprints — appetite, pitches, and the betting table.</div>
+      <a href="agile-shapeup/" class="mod-link">Open →</a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ENGINEERING -->
+<div class="section" id="engineering">
+  <div class="section-header">
+    <span class="section-icon">⚙️</span>
+    <div>
+      <div class="section-title">Engineering Practices</div>
+      <div class="section-desc">Day-to-day craft and delivery quality</div>
     </div>
   </div>
+  <div class="module-grid">
 
-  <!-- MEASUREMENT & MATURITY -->
-  <div class="category measurement" id="measurement">
-    <div class="category-header">
-      <span class="category-icon">📐</span>
-      <span class="category-title">Measurement &amp; Maturity</span>
-      <span class="category-desc">How to know if it's working</span>
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">📝</div></div>
+      <div class="mod-title">User Story Writing</div>
+      <div class="mod-path">agile / agile-userstories</div>
+      <div class="mod-desc">As a / I want / So that, INVEST criteria, acceptance criteria patterns, and story splitting.</div>
+      <a href="agile-userstories/" class="mod-link">Open →</a>
     </div>
-    <div class="cards">
-      <div class="card soon">
-        <span class="card-icon">🚀</span>
-        <div class="card-title">DORA Metrics</div>
-        <div class="card-path">agile / agile-dora</div>
-        <div class="card-desc">Deployment frequency, lead time for changes, MTTR, and change failure rate.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">📈</span>
-        <div class="card-title">Agile Maturity Model</div>
-        <div class="card-path">agile / agile-maturity</div>
-        <div class="card-desc">Team self-assessment frameworks — from ad-hoc to high-performing.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">💓</span>
-        <div class="card-title">Team Health Checks</div>
-        <div class="card-path">agile / agile-health</div>
-        <div class="card-desc">Spotify squad health model, NPS for internal teams, and facilitation guides.</div>
-      </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🧹</div></div>
+      <div class="mod-title">Technical Debt Management</div>
+      <div class="mod-path">agile / agile-techdebt</div>
+      <div class="mod-desc">How to identify, classify, track, and pay down tech debt within sprints.</div>
+      <a href="agile-techdebt/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">✅</div></div>
+      <div class="mod-title">Definition of Done</div>
+      <div class="mod-path">agile / agile-dod</div>
+      <div class="mod-desc">Building a strong DoD — criteria by team type, anti-patterns, and examples.</div>
+      <a href="agile-dod/" class="mod-link">Open →</a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- MEASUREMENT -->
+<div class="section" id="measurement">
+  <div class="section-header">
+    <span class="section-icon">📐</span>
+    <div>
+      <div class="section-title">Measurement &amp; Maturity</div>
+      <div class="section-desc">How to know if it's working</div>
     </div>
   </div>
+  <div class="module-grid">
 
-  <!-- PEOPLE & LEADERSHIP -->
-  <div class="category people" id="people">
-    <div class="category-header">
-      <span class="category-icon">🤝</span>
-      <span class="category-title">People &amp; Leadership</span>
-      <span class="category-desc">Teams, culture, and organisational effectiveness</span>
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🚀</div></div>
+      <div class="mod-title">DORA Metrics</div>
+      <div class="mod-path">agile / agile-dora</div>
+      <div class="mod-desc">Deployment frequency, lead time for changes, MTTR, and change failure rate.</div>
+      <a href="agile-dora/" class="mod-link">Open →</a>
     </div>
-    <div class="cards">
-      <div class="card soon">
-        <span class="card-icon">🎯</span>
-        <div class="card-title">OKRs for Agile Teams</div>
-        <div class="card-path">agile / agile-okrs</div>
-        <div class="card-desc">Connecting team Sprint goals to company objectives and key results.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">🗺</span>
-        <div class="card-title">Team Topologies</div>
-        <div class="card-path">agile / agile-topologies</div>
-        <div class="card-desc">Stream-aligned, platform, enabling, and complicated-subsystem team types.</div>
-      </div>
-      <div class="card soon">
-        <span class="card-icon">🛡</span>
-        <div class="card-title">Psychological Safety</div>
-        <div class="card-path">agile / agile-safety</div>
-        <div class="card-desc">Westrum culture model, measuring safety, and how to build it deliberately.</div>
-      </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">📈</div></div>
+      <div class="mod-title">Agile Maturity Model</div>
+      <div class="mod-path">agile / agile-maturity</div>
+      <div class="mod-desc">Team self-assessment frameworks — from ad-hoc to high-performing.</div>
+      <a href="agile-maturity/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">💓</div></div>
+      <div class="mod-title">Team Health Checks</div>
+      <div class="mod-path">agile / agile-health</div>
+      <div class="mod-desc">Spotify squad health model, NPS for internal teams, and facilitation guides.</div>
+      <a href="agile-health/" class="mod-link">Open →</a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PEOPLE -->
+<div class="section" id="people">
+  <div class="section-header">
+    <span class="section-icon">🤝</span>
+    <div>
+      <div class="section-title">People &amp; Leadership</div>
+      <div class="section-desc">Teams, culture, and organisational effectiveness</div>
     </div>
   </div>
+  <div class="module-grid">
 
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🎯</div></div>
+      <div class="mod-title">OKRs for Agile Teams</div>
+      <div class="mod-path">agile / agile-okrs</div>
+      <div class="mod-desc">Connecting team Sprint goals to company objectives and key results.</div>
+      <a href="agile-okrs/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🗺</div></div>
+      <div class="mod-title">Team Topologies</div>
+      <div class="mod-path">agile / agile-topologies</div>
+      <div class="mod-desc">Stream-aligned, platform, enabling, and complicated-subsystem team types.</div>
+      <a href="agile-topologies/" class="mod-link">Open →</a>
+    </div>
+
+    <div class="module">
+      <div class="mod-top"><div class="mod-icon">🛡</div></div>
+      <div class="mod-title">Psychological Safety</div>
+      <div class="mod-path">agile / agile-safety</div>
+      <div class="mod-desc">Westrum culture model, measuring safety, and how to build it deliberately.</div>
+      <a href="agile-safety/" class="mod-link">Open →</a>
+    </div>
+
+  </div>
 </div>
 
 <footer>
-  <p>sathishkumaralagiri.github.io/agile · <a href="agile-metrics/LICENSE">CC BY 4.0</a> · 2026</p>
-  <p><a href="https://github.com/sathishkumaralagiri/agile">Contribute on GitHub ↗</a></p>
+  sathishkumaralagiri.github.io/agile · <a href="agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>
+  <a href="https://github.com/sathishkumaralagiri/agile">Contribute on GitHub ↗</a>
 </footer>
 
 </body>

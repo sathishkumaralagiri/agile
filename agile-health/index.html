@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team Health Checks Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .health-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin:.5rem 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;align-items:start}
+  .health-card .dimension{font-weight:600;font-size:.9rem;grid-column:1/-1;margin-bottom:.25rem}
+  .traffic{padding:.5rem .75rem;border-radius:4px;font-size:.78rem}
+  .traffic .label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+  .traffic.green{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3)}
+  .traffic.amber{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3)}
+  .traffic.red{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3)}
+  .traffic.green .label{color:#10b981}.traffic.amber .label{color:#f59e0b}.traffic.red .label{color:#ef4444}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.health-card{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-health</span>
+  <span class="spacer"></span>
+  <a href="#spotify">Spotify Model</a><a href="#session">Running a Check</a><a href="#nps">Team NPS</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-health" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-health · v1.0</div>
+  <h1>Team <em>Health Checks</em></h1>
+  <p>Spotify's Squad Health Model, NPS for internal teams, and practical facilitation guides — tools to understand and improve team health.</p>
+  <div class="hero-links">
+    <a href="#spotify">Spotify Model →</a><a href="#session" class="ghost">Running a Check</a><a href="#nps" class="ghost">Team NPS</a><a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">11</div><div class="label">Health dimensions</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">Traffic light states</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">Week cadence</div></div>
+  <div class="stat"><div class="num">45</div><div class="label">Minute session</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#why">Why team health checks?</a></li><li><a href="#spotify">Spotify model overview</a></li></ul>
+  <h3>The Dimensions</h3>
+  <ul><li><a href="#dimensions">11 health dimensions</a></li><li><a href="#indicators">Green / Amber / Red</a></li></ul>
+  <h3>Running a Check</h3>
+  <ul><li><a href="#session">Session format</a></li><li><a href="#facilitation">Facilitation tips</a></li><li><a href="#tracking">Tracking over time</a></li></ul>
+  <h3>Other Models</h3>
+  <ul><li><a href="#nps">Team NPS</a></li><li><a href="#five-dysfunctions">5 Dysfunctions lens</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="why">
+  <div class="section-label">Foundation</div>
+  <h2>Why Team <em>Health Checks</em>?</h2>
+  <p>Health checks give teams a structured way to surface hidden problems before they become crises. The key insight from Spotify's Engineering Culture: teams that talk openly about what's not working are more resilient than teams that pretend everything is fine.</p>
+  <p>Unlike maturity models, health checks are explicitly not about reaching a higher level — they are about understanding the current state and having an honest conversation about it.</p>
+  <div class="callout"><strong>Health checks are for the team first.</strong> If results are reported to management as a progress metric, psychological safety collapses and honest answers stop.</div>
+</div>
+
+<div class="section" id="spotify">
+  <div class="section-label">Foundation</div>
+  <h2>The Spotify <em>Squad Health Model</em></h2>
+  <p>Developed at Spotify by Joakim Sundén and Jason Yip, the Squad Health Check model uses a traffic-light assessment across 11 dimensions. Each dimension is scored Green (good), Amber (some concerns), or Red (needs urgent attention).</p>
+  <p>The power is in the conversation — not the colour. Two team members might score the same dimension differently, and that disagreement is the signal to discuss.</p>
+</div>
+
+<div class="section" id="dimensions">
+  <div class="section-label">The Dimensions</div>
+  <h2>11 Health <em>Dimensions</em></h2>
+
+  <div class="health-card">
+    <div class="dimension">🚀 Easy to Release</div>
+    <div class="traffic green"><div class="label">Green</div>Releases are routine, automated, and low-stress</div>
+    <div class="traffic amber"><div class="label">Amber</div>Releases happen but require manual steps or cause anxiety</div>
+    <div class="traffic red"><div class="label">Red</div>Releases are rare, painful, or avoided</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🎯 Suitable Process</div>
+    <div class="traffic green"><div class="label">Green</div>Our process fits the work; ceremonies are valuable</div>
+    <div class="traffic amber"><div class="label">Amber</div>Some ceremonies feel like overhead; process occasionally gets in the way</div>
+    <div class="traffic red"><div class="label">Red</div>Process is chaos or bureaucracy; we're constantly context-switching</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">💡 Tech Quality</div>
+    <div class="traffic green"><div class="label">Green</div>We're proud of our codebase; tech debt is managed</div>
+    <div class="traffic amber"><div class="label">Amber</div>Some areas are a mess; tech debt slows some work</div>
+    <div class="traffic red"><div class="label">Red</div>We're drowning in debt; the codebase is a liability</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">💎 Value</div>
+    <div class="traffic green"><div class="label">Green</div>We know why our work matters; it creates real customer value</div>
+    <div class="traffic amber"><div class="label">Amber</div>We sometimes do work of questionable value or unclear purpose</div>
+    <div class="traffic red"><div class="label">Red</div>We don't know if our work matters; we feel like a feature factory</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🚄 Speed</div>
+    <div class="traffic green"><div class="label">Green</div>We move fast; good ideas reach customers quickly</div>
+    <div class="traffic amber"><div class="label">Amber</div>We're slower than we'd like; blockers are common</div>
+    <div class="traffic red"><div class="label">Red</div>Delivery is painfully slow; nothing moves without a fight</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🎠 Mission</div>
+    <div class="traffic green"><div class="label">Green</div>We know exactly why we exist; everyone's aligned on our mission</div>
+    <div class="traffic amber"><div class="label">Amber</div>Mission is vague or changes often; alignment is patchy</div>
+    <div class="traffic red"><div class="label">Red</div>We don't know what we're trying to achieve or why</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🎈 Fun</div>
+    <div class="traffic green"><div class="label">Green</div>We enjoy our work; team atmosphere is positive and energising</div>
+    <div class="traffic amber"><div class="label">Amber</div>Work is okay but not particularly enjoyable; morale is flat</div>
+    <div class="traffic red"><div class="label">Red</div>Work is stressful or joyless; people are burning out</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🧠 Learning</div>
+    <div class="traffic green"><div class="label">Green</div>We learn constantly; individuals grow professionally</div>
+    <div class="traffic amber"><div class="label">Amber</div>Some learning happens but it's ad hoc; growth is slow</div>
+    <div class="traffic red"><div class="label">Red</div>No time or space for learning; we're stuck in firefighting mode</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🤝 Collaboration</div>
+    <div class="traffic green"><div class="label">Green</div>Team works seamlessly together; healthy cross-team relationships</div>
+    <div class="traffic amber"><div class="label">Amber</div>Internal friction or difficult cross-team dependencies</div>
+    <div class="traffic red"><div class="label">Red</div>Silos, blame culture, or cross-team conflict</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">🔧 Support</div>
+    <div class="traffic green"><div class="label">Green</div>We get the support we need from leadership and other teams</div>
+    <div class="traffic amber"><div class="label">Amber</div>Support is inconsistent; some impediments aren't removed</div>
+    <div class="traffic red"><div class="label">Red</div>We feel unsupported; impediments never get resolved</div>
+  </div>
+
+  <div class="health-card">
+    <div class="dimension">💪 Pawns or Players</div>
+    <div class="traffic green"><div class="label">Green</div>We control our destiny; we influence what we work on and how</div>
+    <div class="traffic amber"><div class="label">Amber</div>We have some control but often get work assigned without input</div>
+    <div class="traffic red"><div class="label">Red</div>We feel like order-takers with no influence</div>
+  </div>
+</div>
+
+<div class="section" id="session">
+  <div class="section-label">Running a Check</div>
+  <h2>Session <em>Format</em></h2>
+  <pre>Preparation
+→ 11 dimension cards (physical or digital; one per card)
+→ Green / Amber / Red voting cards or digital tool (Miro, EasyRetro)
+→ 45 minutes; whole team present including SM and PO
+→ Run every 6–8 weeks, not monthly or ad hoc
+
+Session (45 min)
+0–5 min  → Set context: "This is for us. Results stay in this room."
+5–25 min → Dimension by dimension:
+             - Facilitator reads the dimension
+             - Everyone votes simultaneously (no influence)
+             - Results revealed; if mixed → 2-min discussion only
+             - Note: most positive / most concerning aspect
+25–40 min → Focus on 2–3 Red/Amber dimensions with biggest gap or trend
+             - What's behind the score?
+             - What would move it one step in the right direction?
+40–45 min → Agree 1–2 actions with owners; add to Sprint Backlog</pre>
+  <div class="callout info"><strong>Simultaneous voting is critical.</strong> If one person reveals their colour before others, it anchors the group. Use physical cards flipped face-down until "reveal."</div>
+</div>
+
+<div class="section" id="nps">
+  <div class="section-label">Other Models</div>
+  <h2>Team <em>NPS</em></h2>
+  <p>A simple pulse metric: "On a scale of 0–10, how likely are you to recommend this team as a great place to work?" Score monthly, anonymously.</p>
+  <pre>Net Promoter Score calculation:
+→ Promoters (9–10): enthusiastic advocates
+→ Passives (7–8): satisfied but not enthusiastic
+→ Detractors (0–6): unhappy team members
+
+Team NPS = % Promoters − % Detractors
+
+Interpretation:
+&gt; 50  → Exceptional team health
+30–50 → Healthy; some friction worth addressing
+0–30  → Neutral; improvement needed
+&lt; 0   → Significant health issues requiring urgent attention
+
+Use alongside:
+→ Open question: "What's one thing we could do to raise your score?"
+→ Track monthly trend; a drop of 10+ points is a signal to investigate</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Results reported to management</td><td>Team stops being honest; all greens, nothing improves</td><td>Results are team-only; SM can summarise themes with permission</td></tr>
+    <tr><td>Sequential voting</td><td>First vote anchors the rest; false consensus</td><td>Simultaneous reveal always</td></tr>
+    <tr><td>No action from results</td><td>Team stops engaging; "just another meeting"</td><td>1–2 concrete actions every session; tracked to completion</td></tr>
+    <tr><td>Skipping Red dimensions</td><td>Painful topics avoided; nothing improves</td><td>Red = must discuss; skip ambers if time is short, never reds</td></tr>
+    <tr><td>Running too frequently</td><td>Score fatigue; answers become mechanical</td><td>Every 6–8 weeks maximum; allows real change between sessions</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Health Check <em>Cheat Sheet</em></h2>
+  <pre>11 Spotify dimensions
+Easy to Release · Suitable Process · Tech Quality · Value
+Speed · Mission · Fun · Learning · Collaboration · Support
+Pawns or Players
+
+Traffic lights
+🟢 Green → working well, we're proud of this
+🟡 Amber → some concerns, trend watching
+🔴 Red   → significant problem, needs action now
+
+Session format (45 min)
+0–5    → Context setting (results stay in team)
+5–25   → Dimension voting + brief discussions
+25–40  → Deep dive on 2–3 red/amber dimensions
+40–45  → 1–2 actions with owners → Sprint Backlog
+
+Key rules
+→ Simultaneous reveal (no anchoring)
+→ Results are for the team, not management
+→ Every session produces at least 1 committed action
+→ Run every 6–8 weeks
+
+Team NPS
+Score: 0–10 "Recommend as great place to work?"
+NPS = % Promoters (9–10) − % Detractors (0–6)
+&gt;50 = exceptional · 0–30 = needs work · &lt;0 = urgent</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-health · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

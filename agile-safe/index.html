@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAFe — Scaled Agile Framework Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}
+  nav a{color:var(--muted)}
+  nav a:hover{color:var(--text)}
+  nav .spacer{flex:1}
+  nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat{text-align:center}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}
+  .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto;gap:0}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}
+  .sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}
+  .sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}
+  .sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}
+  h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem;color:var(--text)}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}
+  .card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem;color:var(--text)}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  .card .tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);padding:.15rem .5rem;font-family:'Courier New',monospace;font-size:.65rem;color:var(--muted);border-radius:3px;margin-top:.5rem}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}
+  .callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .level-diagram{display:grid;gap:.5rem;margin:1.5rem 0}
+  .level-row{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem}
+  .level-row .level-badge{background:var(--accent);color:#000;font-family:'Courier New',monospace;font-size:.65rem;font-weight:bold;padding:.2rem .5rem;border-radius:3px;white-space:nowrap}
+  .level-row .level-title{font-weight:600;font-size:.9rem}
+  .level-row .level-desc{font-size:.8rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.stats{gap:1rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span>
+  <span class="breadcrumb">/</span>
+  <span>agile-safe</span>
+  <span class="spacer"></span>
+  <a href="#pi-planning">PI Planning</a>
+  <a href="#arts">ARTs</a>
+  <a href="#levels">Levels</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-safe" class="gh">GitHub ↗</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">agile / agile-safe · v1.0</div>
+  <h1>Scaled Agile Framework <em>(SAFe)</em> Reference</h1>
+  <p>PI Planning, Agile Release Trains, portfolio management, and enterprise agility — a practitioner's guide to SAFe without the marketing.</p>
+  <div class="hero-links">
+    <a href="#levels">Levels →</a>
+    <a href="#pi-planning" class="ghost">PI Planning</a>
+    <a href="#arts" class="ghost">ARTs</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">4</div><div class="label">SAFe levels</div></div>
+  <div class="stat"><div class="num">5</div><div class="label">Core values</div></div>
+  <div class="stat"><div class="num">2</div><div class="label">PI cadence (weeks)</div></div>
+  <div class="stat"><div class="num">12</div><div class="label">Lean-Agile principles</div></div>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul>
+    <li><a href="#overview">SAFe overview</a></li>
+    <li><a href="#levels">Four levels</a></li>
+    <li><a href="#values">Core values</a></li>
+  </ul>
+  <h3>Team Level</h3>
+  <ul>
+    <li><a href="#team-level">Agile teams</a></li>
+    <li><a href="#iterations">Iterations</a></li>
+  </ul>
+  <h3>Program Level</h3>
+  <ul>
+    <li><a href="#arts">Agile Release Train</a></li>
+    <li><a href="#pi-planning">PI Planning</a></li>
+    <li><a href="#pi-objectives">PI Objectives</a></li>
+    <li><a href="#ip-iteration">IP Iteration</a></li>
+  </ul>
+  <h3>Large Solution</h3>
+  <ul>
+    <li><a href="#solution-train">Solution Train</a></li>
+    <li><a href="#capex">CapEx / OpEx</a></li>
+  </ul>
+  <h3>Portfolio</h3>
+  <ul>
+    <li><a href="#portfolio">Portfolio level</a></li>
+    <li><a href="#epics">Epics &amp; Lean budget</a></li>
+  </ul>
+  <h3>Reference</h3>
+  <ul>
+    <li><a href="#anti-patterns">Anti-patterns</a></li>
+    <li><a href="#cheatsheet">Cheat sheet</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<div class="section" id="overview">
+  <div class="section-label">Foundation</div>
+  <h2>What is <em>SAFe</em>?</h2>
+  <p>SAFe (Scaled Agile Framework) is a set of organisation and workflow patterns for implementing agile practices at enterprise scale. It provides guidance for roles, activities, and artefacts to synchronise alignment, collaboration, and delivery across large numbers of agile teams.</p>
+  <p>SAFe is built on Lean, Agile, and DevOps principles. It applies them at three primary levels — team, program, and portfolio — and adds a fourth Large Solution level for the most complex systems.</p>
+  <div class="callout"><strong>When to use SAFe:</strong> SAFe is designed for organisations with 50–150+ people working on a single product or product portfolio, where cross-team coordination and alignment are persistent pain points.</div>
+</div>
+
+<div class="section" id="levels">
+  <div class="section-label">Architecture</div>
+  <h2>The Four <em>Levels</em></h2>
+  <div class="level-diagram">
+    <div class="level-row">
+      <div class="level-badge">L4</div>
+      <div>
+        <div class="level-title">Portfolio</div>
+        <div class="level-desc">Strategy, investment funding, Lean Portfolio Management, Epic-level governance</div>
+      </div>
+    </div>
+    <div class="level-row">
+      <div class="level-badge">L3</div>
+      <div>
+        <div class="level-title">Large Solution</div>
+        <div class="level-desc">Coordinating multiple ARTs; Solution Trains, Solution Architects, Value Streams</div>
+      </div>
+    </div>
+    <div class="level-row">
+      <div class="level-badge">L2</div>
+      <div>
+        <div class="level-title">Program (Essential SAFe)</div>
+        <div class="level-desc">Agile Release Trains, PI Planning, System Demo, Inspect &amp; Adapt</div>
+      </div>
+    </div>
+    <div class="level-row">
+      <div class="level-badge">L1</div>
+      <div>
+        <div class="level-title">Team</div>
+        <div class="level-desc">Scrum or Kanban teams, iterations, team backlogs, team demos</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout info"><strong>Start with Essential SAFe</strong> (Levels 1–2). Only add Large Solution and Portfolio layers when the complexity genuinely demands it.</div>
+</div>
+
+<div class="section" id="values">
+  <div class="section-label">Foundation</div>
+  <h2>Core <em>Values</em></h2>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🤝</div><div class="title">Alignment</div><div class="desc">Strategy cascades from portfolio to team through PI Objectives and OKRs.</div><div class="tag">Culture</div></div>
+    <div class="card"><div class="icon">📦</div><div class="title">Built-in Quality</div><div class="desc">Quality is not inspected in — it is built in at every layer via engineering practices.</div><div class="tag">Engineering</div></div>
+    <div class="card"><div class="icon">🔄</div><div class="title">Transparency</div><div class="desc">Radiate information up, down, and across. No hidden status.</div><div class="tag">Culture</div></div>
+    <div class="card"><div class="icon">🚀</div><div class="title">Program Execution</div><div class="desc">Reliably deliver value — PI after PI, sprint after sprint.</div><div class="tag">Delivery</div></div>
+    <div class="card"><div class="icon">🌊</div><div class="title">Lean-Agile Leadership</div><div class="desc">Leaders model and reinforce lean-agile mindset and practices throughout the org.</div><div class="tag">Leadership</div></div>
+  </div>
+</div>
+
+<div class="section" id="arts">
+  <div class="section-label">Program Level</div>
+  <h2>Agile Release Train <em>(ART)</em></h2>
+  <p>The ART is the primary value delivery mechanism in SAFe — a long-lived, self-organising team of agile teams (typically 50–125 people) that plan, commit, and execute together on a common mission.</p>
+  <h3>ART Roles</h3>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🚂</div><div class="title">Release Train Engineer</div><div class="desc">Chief Scrum Master for the ART. Facilitates ART events, removes impediments, drives improvement.</div><div class="tag">RTE</div></div>
+    <div class="card"><div class="icon">🏗</div><div class="title">System Architect</div><div class="desc">Defines ART-level architecture. Facilitates Architectural Runway.</div><div class="tag">Architecture</div></div>
+    <div class="card"><div class="icon">🎯</div><div class="title">Product Management</div><div class="desc">Owns the Program Backlog. Sets Program PI Objectives. Connects to portfolio strategy.</div><div class="tag">Strategy</div></div>
+    <div class="card"><div class="icon">💼</div><div class="title">Business Owners</div><div class="desc">Key stakeholders. Attend PI Planning and score PI Objectives at end of PI.</div><div class="tag">Governance</div></div>
+  </div>
+  <h3>ART Events</h3>
+  <table>
+    <tr><th>Event</th><th>Cadence</th><th>Purpose</th></tr>
+    <tr><td>PI Planning</td><td>Every PI (8–12 weeks)</td><td>Align teams on goals; create team PI Objectives; identify dependencies</td></tr>
+    <tr><td>ART Sync</td><td>Weekly</td><td>Cross-team coordination; surface ART-level impediments</td></tr>
+    <tr><td>System Demo</td><td>Each iteration</td><td>Integrated demo of all teams' work for PI stakeholders</td></tr>
+    <tr><td>Inspect &amp; Adapt</td><td>End of PI</td><td>PI demo + quantitative measurement + retrospective problem-solving</td></tr>
+  </table>
+</div>
+
+<div class="section" id="pi-planning">
+  <div class="section-label">Program Level</div>
+  <h2>PI <em>Planning</em></h2>
+  <p>PI Planning is the heartbeat of SAFe — a two-day event attended by the entire ART (all teams, business owners, product management, architects). It aligns everyone on a common mission and creates team-level plans for the upcoming Program Increment.</p>
+  <h3>Standard PI Planning Agenda (2 days)</h3>
+  <table>
+    <tr><th>Time</th><th>Activity</th><th>Who</th></tr>
+    <tr><td>Day 1 AM</td><td>Business context; Vision; Architecture briefing</td><td>Execs, Product Mgmt, Architects</td></tr>
+    <tr><td>Day 1 PM</td><td>Team breakouts: Draft team PI Objectives; plan iterations 1–4</td><td>All teams</td></tr>
+    <tr><td>Day 1 PM</td><td>Draft plan review with Product Management and RTE</td><td>All teams</td></tr>
+    <tr><td>Day 2 AM</td><td>Management review; problem solving; adjust plans</td><td>Teams + management</td></tr>
+    <tr><td>Day 2 PM</td><td>Final plan review; risk identification (ROAM)</td><td>All ART</td></tr>
+    <tr><td>Day 2 PM</td><td>PI Objective confidence vote; retrospective</td><td>All ART</td></tr>
+  </table>
+  <h3>ROAM — Risk Management</h3>
+  <pre>R — Resolved: Risk is no longer a concern (explain why)
+O — Owned: Risk is owned by a specific person; action plan exists
+A — Accepted: Risk is understood; no action possible; accepted
+M — Mitigated: Plan is in place to reduce probability or impact</pre>
+  <div class="callout"><strong>Confidence vote:</strong> At the end of PI Planning, each team votes 1–5 fists. A vote of 3+ fists ART-wide means proceed. Below 3 = significant problems must be addressed before committing.</div>
+</div>
+
+<div class="section" id="pi-objectives">
+  <div class="section-label">Program Level</div>
+  <h2>PI <em>Objectives</em></h2>
+  <p>Every team and the ART as a whole produces PI Objectives — a short list of business outcomes to achieve in the PI. They connect team-level work to business value.</p>
+  <pre>Team PI Objectives format:
+→ Business objective (outcome, not feature)
+→ Committed or Uncommitted (stretch)
+→ Business Value score from Business Owners (1–10)
+→ Planned Value / Achieved Value (scored at PI end)
+
+Example committed objective:
+"Enable single sign-on for all enterprise customers
+so they can access the platform without separate credentials."
+
+Example uncommitted (stretch) objective:
+"Integrate with Okta — dependent on API docs availability."</pre>
+  <div class="callout info"><strong>Predictability Measure:</strong> ART predictability = Achieved Business Value / Planned Business Value × 100%. Target: 80–100%.</div>
+</div>
+
+<div class="section" id="ip-iteration">
+  <div class="section-label">Program Level</div>
+  <h2>IP <em>Iteration</em></h2>
+  <p>The Innovation and Planning (IP) Iteration is the final iteration of every PI. It is a dedicated timebox for innovation, hardening, integration testing, and planning activities.</p>
+  <pre>IP Iteration activities:
+→ Inspect &amp; Adapt workshop (PI System Demo + retrospective + problem-solving)
+→ Innovation time: hackathons, spikes, experiments, tech debt
+→ PI Planning preparation
+→ Training and enablement
+→ Integration testing and hardening</pre>
+  <div class="callout"><strong>Never use the IP Iteration as a buffer for unfinished features.</strong> Teams that do this consistently are signalling a planning or Definition-of-Done problem that needs to be addressed directly.</div>
+</div>
+
+<div class="section" id="portfolio">
+  <div class="section-label">Portfolio Level</div>
+  <h2><em>Portfolio</em> Management</h2>
+  <p>Lean Portfolio Management (LPM) connects the enterprise strategy to ART execution through budgets, epics, and strategic themes.</p>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🗺</div><div class="title">Strategic Themes</div><div class="desc">Business objectives that connect the portfolio to the enterprise strategy. Change annually.</div><div class="tag">Strategy</div></div>
+    <div class="card"><div class="icon">💰</div><div class="title">Lean Budgeting</div><div class="desc">Fund value streams, not projects. Guardrails set boundaries; teams allocate within them.</div><div class="tag">Finance</div></div>
+    <div class="card"><div class="icon">📋</div><div class="title">Portfolio Backlog</div><div class="desc">Epics waiting to enter a value stream. Reviewed at the Portfolio Kanban.</div><div class="tag">Planning</div></div>
+    <div class="card"><div class="icon">📊</div><div class="title">Portfolio Kanban</div><div class="desc">Funnel for epics — from Funnel through Analysis, Portfolio Backlog, Implementing, Done.</div><div class="tag">Flow</div></div>
+  </div>
+  <h3>Lean Budget Guardrails</h3>
+  <pre>Guardrails control spending without micromanaging teams:
+→ CapEx vs OpEx split guidance
+→ Approved PI Objectives thresholds
+→ Spending authority tiers per value stream
+→ WSJF prioritisation for epics competing for budget</pre>
+</div>
+
+<div class="section" id="epics">
+  <div class="section-label">Portfolio Level</div>
+  <h2>Epics &amp; <em>WSJF</em></h2>
+  <p>Epics are large initiatives that span multiple ARTs or PIs. They are prioritised using Weighted Shortest Job First (WSJF) — an economic decision model.</p>
+  <pre>WSJF = Cost of Delay / Job Duration
+
+Cost of Delay = User + Business Value
+              + Time Criticality
+              + Risk Reduction / Opportunity Enablement
+
+All values scored 1–21 (Fibonacci).
+Divide Cost of Delay by estimated job size (also Fibonacci).
+Highest WSJF score → next epic to implement.</pre>
+  <div class="callout"><strong>Lean Business Case:</strong> Before a portfolio epic enters the Program Backlog, it must have a Lean Business Case: hypothesis, expected benefits, MVP definition, and go/no-go decision criteria.</div>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2>SAFe <em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>SAFe without culture change</td><td>Processes layered on top of command-and-control; nothing actually changes</td><td>Leadership must model Lean-Agile mindset first</td></tr>
+    <tr><td>PI Planning as theatre</td><td>Plans made before the event; teams just go through the motions</td><td>Real dependency discovery and real negotiations required</td></tr>
+    <tr><td>RTE as project manager</td><td>RTE assigns tasks, tracks individuals, escalates to management</td><td>RTE is a servant leader; teams self-organise</td></tr>
+    <tr><td>Funding projects, not value streams</td><td>Budget resets kill long-lived teams; knowledge lost</td><td>Lean budgeting funds value streams annually</td></tr>
+    <tr><td>Ignoring Architectural Runway</td><td>Teams cannot deliver without infrastructure; speed drops</td><td>Allocate 20% capacity per PI to enablers</td></tr>
+    <tr><td>IP Iteration as buffer sprint</td><td>Teams dump unfinished features into IP; it ceases to be innovation time</td><td>Definition of Done must be enforced sprint-by-sprint</td></tr>
+    <tr><td>WSJF theatre</td><td>Scores manipulated to rubber-stamp pre-made decisions</td><td>Use WSJF for genuine prioritisation conversations with Business Owners</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>SAFe <em>Cheat Sheet</em></h2>
+  <pre>Levels
+Portfolio  → Strategic Themes · Lean Budgets · Portfolio Epics · LPM
+Large Sol  → Solution Train · Solution Architect · Solution Intent
+Program    → ART · RTE · PI Planning · System Demo · I&amp;A
+Team       → Scrum/Kanban · Iterations · Team Demos
+
+ART cadence (per PI)
+Iterations → 4–5 × 2-week sprints + 1 IP Iteration
+PI length  → 10–12 weeks total
+PI Planning → 2 days, full ART, every PI
+
+PI Planning outputs
+→ Team PI Objectives (committed + uncommitted)
+→ Program Board (dependencies, milestones)
+→ ROAM risks (Resolved/Owned/Accepted/Mitigated)
+→ Confidence vote (≥3 fists to proceed)
+
+WSJF formula
+WSJF = (User+Business Value + Time Criticality + RR/OE) / Job Size
+
+Predictability
+ART Predictability = Achieved BV / Planned BV × 100%
+Target: 80–100%</pre>
+</div>
+
+</div><!-- content -->
+</div><!-- layout -->
+
+<footer>
+  agile / agile-safe · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>
+  PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a>
+</footer>
+</body>
+</html>

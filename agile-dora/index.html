@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DORA Metrics Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin:1rem 0}
+  .metric-card .metric-name{font-size:1.1rem;font-weight:600;margin-bottom:.25rem}
+  .metric-card .metric-def{font-size:.9rem;color:var(--muted);margin-bottom:1rem}
+  .metric-card .benchmarks{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+  .benchmark{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.5rem;text-align:center}
+  .benchmark .level{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+  .benchmark .level.elite{color:#10b981}.benchmark .level.high{color:#3b82f6}.benchmark .level.med{color:#f59e0b}.benchmark .level.low{color:#ef4444}
+  .benchmark .value{font-size:.8rem;color:var(--text);font-weight:600}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.metric-card .benchmarks{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-dora</span>
+  <span class="spacer"></span>
+  <a href="#metrics">4 Metrics</a><a href="#benchmarks">Benchmarks</a><a href="#improving">Improving</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-dora" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-dora · v1.0</div>
+  <h1><em>DORA</em> Metrics Reference</h1>
+  <p>The four key metrics that predict software delivery performance and organisational outcomes — deployment frequency, lead time, MTTR, and change failure rate.</p>
+  <div class="hero-links">
+    <a href="#metrics">4 Metrics →</a><a href="#benchmarks" class="ghost">Benchmarks</a><a href="#improving" class="ghost">Improving</a><a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">4</div><div class="label">Key metrics</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">Performance bands</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">Years of research</div></div>
+  <div class="stat"><div class="num">∞</div><div class="label">Excuses defeated</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#what">What are DORA metrics?</a></li><li><a href="#why">Why they matter</a></li></ul>
+  <h3>The 4 Metrics</h3>
+  <ul>
+    <li><a href="#df">Deployment Frequency</a></li>
+    <li><a href="#lt">Lead Time for Changes</a></li>
+    <li><a href="#cfr">Change Failure Rate</a></li>
+    <li><a href="#mttr">Time to Restore</a></li>
+  </ul>
+  <h3>Benchmarks</h3>
+  <ul><li><a href="#benchmarks">Performance bands</a></li><li><a href="#balance">Throughput vs stability</a></li></ul>
+  <h3>Improvement</h3>
+  <ul><li><a href="#improving">How to improve</a></li><li><a href="#measurement">How to measure</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="what">
+  <div class="section-label">Foundation</div>
+  <h2>What are <em>DORA</em> Metrics?</h2>
+  <p>DORA metrics come from the DevOps Research and Assessment program — six years of research (published in the <em>State of DevOps</em> reports and the book <em>Accelerate</em>) identifying which software delivery practices predict organisational performance.</p>
+  <p>The research identifies four metrics that together capture both throughput (how fast you deliver) and stability (how reliable that delivery is). High performers score well on all four — they are not in tension.</p>
+  <div class="callout"><strong>The core finding:</strong> High performers deploy more frequently AND have lower failure rates AND recover faster than low performers. Speed and stability are not a tradeoff at the elite level — they are complementary.</div>
+</div>
+
+<div class="section" id="metrics">
+  <div class="section-label">The 4 Metrics</div>
+  <h2>The Four <em>DORA</em> Metrics</h2>
+
+  <div class="metric-card" id="df">
+    <div class="metric-name">🚀 Deployment Frequency</div>
+    <div class="metric-def">How often does the organisation successfully release to production?</div>
+    <div class="benchmarks">
+      <div class="benchmark"><div class="level elite">Elite</div><div class="value">Multiple per day</div></div>
+      <div class="benchmark"><div class="level high">High</div><div class="value">Once per day to once per week</div></div>
+      <div class="benchmark"><div class="level med">Medium</div><div class="value">Once per week to once per month</div></div>
+      <div class="benchmark"><div class="level low">Low</div><div class="value">Once per month to once per 6 months</div></div>
+    </div>
+  </div>
+
+  <div class="metric-card" id="lt">
+    <div class="metric-name">⏱ Lead Time for Changes</div>
+    <div class="metric-def">How long does it take for a commit to get into production? (from code committed to code running in production)</div>
+    <div class="benchmarks">
+      <div class="benchmark"><div class="level elite">Elite</div><div class="value">Less than 1 hour</div></div>
+      <div class="benchmark"><div class="level high">High</div><div class="value">1 day to 1 week</div></div>
+      <div class="benchmark"><div class="level med">Medium</div><div class="value">1 week to 1 month</div></div>
+      <div class="benchmark"><div class="level low">Low</div><div class="value">1 month to 6 months</div></div>
+    </div>
+  </div>
+
+  <div class="metric-card" id="cfr">
+    <div class="metric-name">🔴 Change Failure Rate</div>
+    <div class="metric-def">What percentage of changes to production result in a degraded service or require remediation (hotfix, rollback, patch)?</div>
+    <div class="benchmarks">
+      <div class="benchmark"><div class="level elite">Elite</div><div class="value">0–15%</div></div>
+      <div class="benchmark"><div class="level high">High</div><div class="value">0–15%</div></div>
+      <div class="benchmark"><div class="level med">Medium</div><div class="value">0–15%</div></div>
+      <div class="benchmark"><div class="level low">Low</div><div class="value">16–30%</div></div>
+    </div>
+  </div>
+
+  <div class="metric-card" id="mttr">
+    <div class="metric-name">💓 Time to Restore Service (MTTR)</div>
+    <div class="metric-def">How long does it take to recover from a failure in production? (from incident start to service restored)</div>
+    <div class="benchmarks">
+      <div class="benchmark"><div class="level elite">Elite</div><div class="value">Less than 1 hour</div></div>
+      <div class="benchmark"><div class="level high">High</div><div class="value">Less than 1 day</div></div>
+      <div class="benchmark"><div class="level med">Medium</div><div class="value">Less than 1 day</div></div>
+      <div class="benchmark"><div class="level low">Low</div><div class="value">1 day to 1 week</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="benchmarks">
+  <div class="section-label">Benchmarks</div>
+  <h2>Performance <em>Bands</em></h2>
+  <table>
+    <tr><th>Band</th><th>Deploy Frequency</th><th>Lead Time</th><th>Change Failure Rate</th><th>MTTR</th></tr>
+    <tr><td>🏆 Elite</td><td>Multiple/day</td><td>&lt;1 hour</td><td>0–15%</td><td>&lt;1 hour</td></tr>
+    <tr><td>🥇 High</td><td>1/day–1/week</td><td>1 day–1 week</td><td>0–15%</td><td>&lt;1 day</td></tr>
+    <tr><td>🥈 Medium</td><td>1/week–1/month</td><td>1 week–1 month</td><td>0–15%</td><td>&lt;1 day</td></tr>
+    <tr><td>🔴 Low</td><td>&lt;1/month</td><td>1–6 months</td><td>16–30%</td><td>1 day–1 week</td></tr>
+  </table>
+  <div class="callout info">The 2023 State of DevOps report introduced a fifth metric: <strong>Reliability</strong> (measured as meeting or exceeding reliability targets). Elite performers score well on all five.</div>
+</div>
+
+<div class="section" id="improving">
+  <div class="section-label">Improvement</div>
+  <h2>How to <em>Improve</em> Each Metric</h2>
+  <h3>Deployment Frequency</h3>
+  <pre>Blockers: long approval chains, manual release processes, infrequent merges
+Improvements:
+→ Trunk-based development (feature branches &lt;1 day old)
+→ Automated CI/CD pipeline (no manual steps to deploy)
+→ Feature flags to decouple deploy from release
+→ Small, incremental commits (not big-bang merges)</pre>
+  <h3>Lead Time for Changes</h3>
+  <pre>Blockers: long code review queues, slow test suites, manual approvals
+Improvements:
+→ Automated testing (unit + integration + smoke) &lt;10 min
+→ Pair programming / async code review SLA (24h max)
+→ Eliminate manual gates; automate compliance checks
+→ Reduce batch size of changes</pre>
+  <h3>Change Failure Rate</h3>
+  <pre>Blockers: insufficient automated testing, lack of staging parity
+Improvements:
+→ Test coverage and quality gates in CI
+→ Staging environment that mirrors production
+→ Progressive rollout: canary → 5% → 25% → 100%
+→ Automated regression tests before every deploy</pre>
+  <h3>Time to Restore (MTTR)</h3>
+  <pre>Blockers: slow detection, complex rollback, unclear ownership
+Improvements:
+→ Comprehensive monitoring and alerting (detect within minutes)
+→ Automated rollback or blue/green deploy capability
+→ On-call runbooks with recovery steps
+→ Blameless post-mortems with follow-through on action items</pre>
+</div>
+
+<div class="section" id="measurement">
+  <div class="section-label">Improvement</div>
+  <h2>How to <em>Measure</em> DORA</h2>
+  <pre>Deployment Frequency
+→ Count deployments to production per week/day from your CD pipeline
+→ Use: GitHub Actions logs, Spinnaker, Argo CD, CircleCI deployments
+
+Lead Time for Changes
+→ Time from first commit on a change to production deploy
+→ Use: PR creation timestamp → merge → deploy pipeline completion
+→ Tools: LinearB, Sleuth, DORA dashboard in Google Cloud
+
+Change Failure Rate
+→ Count deploys that triggered an incident, hotfix, or rollback
+   divided by total deploys in the period
+→ Use: PagerDuty incidents + deployment events; label "rollback" deploys
+
+MTTR
+→ PagerDuty / Opsgenie incident opened → incident resolved timestamps
+→ Average or 85th percentile per month</pre>
+  <div class="callout"><strong>Start with manual measurement</strong> for 1–2 weeks to understand your baseline before investing in tooling. Accuracy matters more than automation at first.</div>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Optimising metrics in isolation</td><td>Team game the metric without improving the underlying capability</td><td>All four metrics together tell the story; don't cherry-pick</td></tr>
+    <tr><td>DORA as individual KPI</td><td>Developers blamed for team-level metrics</td><td>DORA measures the team and the system, never individuals</td></tr>
+    <tr><td>Measuring DORA without acting on it</td><td>Dashboards without action plans; "metrics theatre"</td><td>Metrics must drive specific improvement experiments</td></tr>
+    <tr><td>Counting deployments to staging</td><td>Inflates Deployment Frequency; production is what matters</td><td>Only production deployments count</td></tr>
+    <tr><td>Conflating Lead Time with Sprint Cycle Time</td><td>Different measurements; sprint metrics ≠ deployment lead time</td><td>Lead time = code committed → production; measure end-to-end</td></tr>
+    <tr><td>MTTR without post-mortems</td><td>Recover fast but never learn; same incidents recur</td><td>Every P1/P2 incident requires a blameless post-mortem + actions</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>DORA <em>Cheat Sheet</em></h2>
+  <pre>4 Metrics
+DF   → Deployment Frequency (how often to production?)
+LT   → Lead Time for Changes (commit → production)
+CFR  → Change Failure Rate (% deploys causing incidents)
+MTTR → Time to Restore Service (incident start → resolved)
+
+Elite benchmarks
+DF   → multiple times per day
+LT   → less than 1 hour
+CFR  → 0–15%
+MTTR → less than 1 hour
+
+Improving DF &amp; LT (throughput)
+→ Trunk-based development
+→ Automated CI/CD, no manual gates
+→ Feature flags
+→ Small batch sizes
+
+Improving CFR &amp; MTTR (stability)
+→ Comprehensive automated testing
+→ Production-parity staging
+→ Progressive rollout (canary)
+→ Monitoring + alerting + runbooks
+→ Automated rollback capability
+→ Blameless post-mortems
+
+Remember
+→ High performers excel at ALL four — they are not in tension
+→ Measure the system, never individuals</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-dora · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

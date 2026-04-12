@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shape Up — Basecamp's Product Framework Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}
+  nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat{text-align:center}.stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}
+  .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}.card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  .card .tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);padding:.15rem .5rem;font-family:'Courier New',monospace;font-size:.65rem;color:var(--muted);border-radius:3px;margin-top:.5rem}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .cycle-diagram{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin:1.5rem 0}
+  .cycle-phase{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem;text-align:center}
+  .cycle-phase .phase-num{font-family:'Courier New',monospace;font-size:.65rem;color:var(--accent);margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.1em}
+  .cycle-phase .phase-name{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+  .cycle-phase .phase-dur{font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.stats{gap:1rem}.cycle-diagram{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span>
+  <span class="breadcrumb">/</span>
+  <span>agile-shapeup</span>
+  <span class="spacer"></span>
+  <a href="#shaping">Shaping</a>
+  <a href="#betting">Betting Table</a>
+  <a href="#building">Building</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-shapeup" class="gh">GitHub ↗</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">agile / agile-shapeup · v1.0</div>
+  <h1>Shape Up — <em>Basecamp's</em> Framework</h1>
+  <p>Appetite, pitches, and the betting table — an alternative to sprints and backlogs designed for product teams that want to ship meaningful work on a fixed schedule.</p>
+  <div class="hero-links">
+    <a href="#shaping">Shaping →</a>
+    <a href="#betting" class="ghost">Betting Table</a>
+    <a href="#building" class="ghost">Building</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">6</div><div class="label">Week cycles</div></div>
+  <div class="stat"><div class="num">2</div><div class="label">Week cooldown</div></div>
+  <div class="stat"><div class="num">0</div><div class="label">Product backlog</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Appetite per pitch</div></div>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <h3>Overview</h3>
+  <ul>
+    <li><a href="#overview">What is Shape Up?</a></li>
+    <li><a href="#cycle">The 8-week cycle</a></li>
+    <li><a href="#appetite">Appetite vs estimate</a></li>
+  </ul>
+  <h3>Shaping</h3>
+  <ul>
+    <li><a href="#shaping">Shaping work</a></li>
+    <li><a href="#pitch">Writing a pitch</a></li>
+    <li><a href="#breadboards">Breadboards &amp; fat markers</a></li>
+  </ul>
+  <h3>Betting</h3>
+  <ul>
+    <li><a href="#betting">The betting table</a></li>
+    <li><a href="#decks">Pitch decks</a></li>
+  </ul>
+  <h3>Building</h3>
+  <ul>
+    <li><a href="#building">Building phase</a></li>
+    <li><a href="#scopes">Scopes &amp; hill charts</a></li>
+    <li><a href="#no-list">No list, no backlog</a></li>
+  </ul>
+  <h3>Reference</h3>
+  <ul>
+    <li><a href="#vs-scrum">Shape Up vs Scrum</a></li>
+    <li><a href="#anti-patterns">Anti-patterns</a></li>
+    <li><a href="#cheatsheet">Cheat sheet</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<div class="section" id="overview">
+  <div class="section-label">Foundation</div>
+  <h2>What is <em>Shape Up</em>?</h2>
+  <p>Shape Up is a product development methodology created by Basecamp (now 37signals). It replaces sprint backlogs and velocity with Appetite (a time budget), Pitches (shaped work), and a Betting Table (a strategic decision point every cycle).</p>
+  <p>The core insight: most teams spend too much time estimating unshapen work and too little time thinking deeply about what to build. Shape Up inverts this — spend more time shaping before committing, then give teams uninterrupted time to build.</p>
+  <div class="callout"><strong>The key shift:</strong> Instead of "how long will this take?" ask "how much time are we willing to spend on this?" — appetite is a business decision, not a technical estimate.</div>
+</div>
+
+<div class="section" id="cycle">
+  <div class="section-label">Structure</div>
+  <h2>The <em>8-Week</em> Cycle</h2>
+  <div class="cycle-diagram">
+    <div class="cycle-phase"><div class="phase-num">Phase 1</div><div class="phase-name">Shaping</div><div class="phase-dur">Ongoing (parallel)</div></div>
+    <div class="cycle-phase"><div class="phase-num">Phase 2</div><div class="phase-name">Betting Table</div><div class="phase-dur">1–2 days</div></div>
+    <div class="cycle-phase"><div class="phase-num">Phase 3</div><div class="phase-name">Building</div><div class="phase-dur">6 weeks</div></div>
+  </div>
+  <p>After the 6-week building cycle, teams enter a 2-week Cooldown period — unstructured time for bug fixing, exploration, and rest. Shaping for the next cycle happens continuously in parallel with building.</p>
+  <pre>Typical 8-week cadence:
+Weeks 1–6  → Building cycle (teams ship committed work)
+Weeks 7–8  → Cooldown (fixes, exploration, shaping)
+Day 1 of next cycle → Betting Table (commit to next pitches)
+
+Shaping always happens in parallel — it is NOT a phase.</pre>
+</div>
+
+<div class="section" id="appetite">
+  <div class="section-label">Foundation</div>
+  <h2>Appetite vs <em>Estimate</em></h2>
+  <p>The most important concept in Shape Up: Appetite is how much time you're willing to spend on something — a business decision. An estimate is how long you think something will take — a technical prediction.</p>
+  <table>
+    <tr><th>Concept</th><th>Appetite</th><th>Estimate</th></tr>
+    <tr><td>Definition</td><td>Max time we'll invest for the value it delivers</td><td>Prediction of how long it'll take</td></tr>
+    <tr><td>Who sets it</td><td>Business / shapers</td><td>Developers</td></tr>
+    <tr><td>Changes scope?</td><td>Yes — scope is variable, appetite is fixed</td><td>No — teams work to the scope</td></tr>
+    <tr><td>Typical sizes</td><td>Small batch (1–2 weeks) or Big batch (6 weeks)</td><td>Story points, hours, days</td></tr>
+    <tr><td>Risk</td><td>Known upfront</td><td>Discovered mid-execution</td></tr>
+  </table>
+  <div class="callout"><strong>Appetite is fixed. Scope is flexible.</strong> If a feature can't be built to the core value within the appetite, the team cuts scope — not corners, and not the deadline.</div>
+</div>
+
+<div class="section" id="shaping">
+  <div class="section-label">Shaping</div>
+  <h2>Shaping <em>Work</em></h2>
+  <p>Shaping is the upstream design work that transforms a raw idea into a pitch. It is done by a small team (usually 1 designer + 1 technical person) away from the building team. The output is a pitch, not a spec.</p>
+  <h3>The four properties of shaped work</h3>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🎯</div><div class="title">Rough</div><div class="desc">Enough detail to evaluate feasibility and value — not a pixel-perfect spec. Teams have latitude to fill in details.</div></div>
+    <div class="card"><div class="icon">✂️</div><div class="title">Solved</div><div class="desc">The core design problems are solved. No unsolved rabbit holes waiting to ambush the team mid-cycle.</div></div>
+    <div class="card"><div class="icon">⏱</div><div class="title">Bounded</div><div class="desc">A clear appetite is set. Work that doesn't fit the appetite is cut before it reaches the team.</div></div>
+    <div class="card"><div class="icon">🔍</div><div class="title">Risk-identified</div><div class="desc">Rabbit holes (unclear or risky areas) are explicitly called out so the team can address them early.</div></div>
+  </div>
+</div>
+
+<div class="section" id="pitch">
+  <div class="section-label">Shaping</div>
+  <h2>Writing a <em>Pitch</em></h2>
+  <p>A pitch is the output of shaping — a short document that gives the betting table enough information to make a yes/no decision. It is not a requirements document.</p>
+  <pre>Pitch structure:
+1. Problem — what customer pain are we addressing?
+2. Appetite — how much time are we willing to spend? (S or L batch)
+3. Solution — rough sketches (breadboards/fat marker) of the approach
+4. Rabbit holes — what could go wrong? what are we explicitly NOT doing?
+5. No-gos — what's out of scope to keep the appetite intact?
+
+Pitch length: 1–2 pages (or equivalent doc). Not a novel.
+Audience: the betting table (typically senior product + tech leadership)</pre>
+  <div class="callout info"><strong>Pitches are not assigned.</strong> They are proposed. The betting table accepts or rejects them. Rejected pitches are not kept in a backlog — they can be re-pitched in a future cycle if still relevant.</div>
+</div>
+
+<div class="section" id="breadboards">
+  <div class="section-label">Shaping</div>
+  <h2>Breadboards &amp; <em>Fat Markers</em></h2>
+  <p>Shapers use two visual techniques to communicate the solution without over-specifying it:</p>
+  <pre>Breadboard — a wireframe notation for flows:
+→ Places (screens/dialogs)
+→ Affordances (buttons, fields, actions)
+→ Connection lines (navigation between places)
+Purpose: show the flow without implying visual design
+
+Fat marker sketch — drawn with a thick marker (or Sharpie):
+→ Too rough for anyone to take as a spec
+→ Shows spatial layout and rough composition
+→ Leaves design decisions to the building team
+Purpose: communicate concept, not implementation</pre>
+  <div class="callout"><strong>The constraint is intentional.</strong> If your sketches are too detailed, developers will implement them exactly — losing the flexibility they need to solve problems during building.</div>
+</div>
+
+<div class="section" id="betting">
+  <div class="section-label">Betting</div>
+  <h2>The <em>Betting Table</em></h2>
+  <p>The Betting Table is a brief meeting (2–4 hours) of senior stakeholders held before each building cycle. They review shaped pitches and decide which ones to "bet" on for the next cycle.</p>
+  <pre>Betting Table participants (typically):
+→ CEO / product leadership
+→ CTO / technical leadership
+→ Senior designer
+→ No middle management, no committees
+
+Outcomes:
+→ Accepted: pitch is assigned to a team for the next cycle
+→ Declined: not this cycle (no backlog — re-pitch if still relevant)
+→ Needs more shaping: return to shaper with specific questions
+
+Rules:
+→ Teams are committed to 6 weeks uninterrupted
+→ No new work added mid-cycle (circuit breaker)
+→ No carryover — unfinished work is cancelled, not extended</pre>
+  <div class="callout"><strong>The circuit breaker:</strong> If a project can't be finished in the cycle, it is cancelled — not extended. This creates a forcing function to scope properly upfront.</div>
+</div>
+
+<div class="section" id="building">
+  <div class="section-label">Building</div>
+  <h2>The <em>Building</em> Phase</h2>
+  <p>Once work is committed at the betting table, teams of 1–3 people (1 designer + 1–2 programmers) are given 6 weeks of uninterrupted time. No status meetings, no sprint reviews, no re-prioritisation.</p>
+  <h3>Team autonomy</h3>
+  <pre>Teams in the building phase:
+→ Decide their own order of work within the shaped pitch
+→ Define their own tasks (no pre-assigned task lists)
+→ Discover and solve implementation details autonomously
+→ Cut scope to protect the appetite (not the schedule)
+→ Have a single point of contact: the team itself</pre>
+</div>
+
+<div class="section" id="scopes">
+  <div class="section-label">Building</div>
+  <h2>Scopes &amp; <em>Hill Charts</em></h2>
+  <p>Teams organise work into Scopes (integrated slices of the problem) and track progress with Hill Charts — a visual tool that shows whether work is in the "figuring out" or "making it happen" phase.</p>
+  <pre>Scopes (not tasks):
+→ Meaningful chunks of the feature that can be completed end-to-end
+→ Name reflects the problem solved, not the layer (e.g. "Invite flow" not "Backend")
+→ Each scope can be shipped independently if needed
+
+Hill Chart:
+Uphill = "figuring out" (unknowns remain)
+Downhill = "making it happen" (path is clear)
+Peak = all unknowns resolved
+
+Status meeting replacement:
+→ Teams update their Hill Chart in the project tool
+→ Stakeholders check the chart, not the people
+→ Stalled scopes on the uphill side trigger a conversation</pre>
+</div>
+
+<div class="section" id="vs-scrum">
+  <div class="section-label">Comparison</div>
+  <h2>Shape Up <em>vs Scrum</em></h2>
+  <table>
+    <tr><th>Dimension</th><th>Shape Up</th><th>Scrum</th></tr>
+    <tr><td>Cycle length</td><td>6-week building + 2-week cooldown</td><td>1–4 week sprints, continuous</td></tr>
+    <tr><td>Backlog</td><td>None (pitches are ephemeral)</td><td>Product Backlog (persistent)</td></tr>
+    <tr><td>Scope</td><td>Variable (fixed appetite)</td><td>Fixed per sprint (variable timeline)</td></tr>
+    <tr><td>Team size</td><td>1–3 per project</td><td>3–9 developers</td></tr>
+    <tr><td>Progress tracking</td><td>Hill charts (scopes)</td><td>Sprint burndown</td></tr>
+    <tr><td>Mid-cycle changes</td><td>Not permitted (circuit breaker)</td><td>Not permitted (Sprint Goal protected)</td></tr>
+    <tr><td>Best for</td><td>Product companies, ≤30 engineers</td><td>Any team size, continuous delivery</td></tr>
+  </table>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Maintaining a backlog</td><td>Old ideas accumulate; "maybe later" means never, except you're still managing it</td><td>Let pitches expire; re-pitch if still relevant next cycle</td></tr>
+    <tr><td>Over-specifying pitches</td><td>Teams can't make decisions; shaped work feels like a spec</td><td>Rough solutions only; fat markers, not wireframes</td></tr>
+    <tr><td>Adding work mid-cycle</td><td>Teams lose the uninterrupted time that makes Shape Up work</td><td>Enforce the circuit breaker; new work waits for the next betting table</td></tr>
+    <tr><td>Treating appetite as estimate</td><td>Teams treat the 6 weeks as a deadline and add scope to fill it</td><td>Scope is variable; if done early, use remaining time to improve quality</td></tr>
+    <tr><td>Carryover</td><td>Unfinished cycles extend; appetite becomes meaningless</td><td>Cancel unfinished work; re-shape and re-pitch if it's still worth doing</td></tr>
+    <tr><td>No shaping capacity</td><td>Betting table has nothing to bet on; teams get busywork</td><td>Senior people must protect time for shaping — it is strategy work</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Shape Up <em>Cheat Sheet</em></h2>
+  <pre>Key concepts
+Appetite   → how much time we're willing to spend (business decision)
+Pitch      → shaped proposal: problem + appetite + rough solution + rabbit holes
+Betting    → senior leadership chooses pitches; no committee; no backlog
+Circuit    → unfinished work is cancelled, not extended
+Cooldown   → 2 weeks after building for fixes, exploration, shaping
+
+Cycle cadence
+Weeks 1–6  → Building (teams work uninterrupted on committed pitches)
+Weeks 7–8  → Cooldown + Betting Table prep
+Day 1+     → Next building cycle begins
+
+Pitch elements
+1. Problem (the customer pain)
+2. Appetite (Small: 1–2 weeks | Large: 6 weeks)
+3. Solution (breadboards + fat marker sketches)
+4. Rabbit holes (known risks/unknowns to address early)
+5. No-gos (explicit out-of-scope items)
+
+Building tools
+Scopes → integrated slices of the problem (not layers)
+Hill Chart → uphill (figuring out) → peak (solved) → downhill (making it happen)
+
+Team size: 1 designer + 1–2 programmers per project</pre>
+</div>
+
+</div>
+</div>
+
+<footer>
+  agile / agile-shapeup · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>
+  PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a>
+</footer>
+</body>
+</html>

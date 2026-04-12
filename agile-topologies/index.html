@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team Topologies Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .team-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin:.75rem 0}
+  .team-card .th{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+  .team-badge{font-family:'Courier New',monospace;font-size:.7rem;font-weight:bold;padding:.25rem .6rem;border-radius:3px;color:#000}
+  .sa{background:#3b82f6}.pl{background:#8b5cf6}.en{background:#10b981}.cs{background:#f59e0b}
+  .team-title{font-weight:600;font-size:1rem}
+  .team-body{font-size:.85rem;color:var(--muted)}
+  .interaction-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin:1.5rem 0}
+  .interaction-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem;text-align:center}
+  .interaction-card .icon{font-size:1.5rem;margin-bottom:.25rem}
+  .interaction-card .name{font-weight:600;font-size:.85rem;margin-bottom:.25rem}
+  .interaction-card .desc{font-size:.75rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.interaction-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-topologies</span>
+  <span class="spacer"></span>
+  <a href="#types">4 Team Types</a><a href="#interactions">Interactions</a><a href="#cognitive-load">Cognitive Load</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-topologies" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-topologies · v1.0</div>
+  <h1>Team <em>Topologies</em></h1>
+  <p>Stream-aligned, platform, enabling, and complicated-subsystem team types — the four fundamental patterns for organising software delivery at scale.</p>
+  <div class="hero-links">
+    <a href="#types">4 Team Types →</a>
+    <a href="#interactions" class="ghost">Interactions</a>
+    <a href="#cognitive-load" class="ghost">Cognitive Load</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">4</div><div class="label">Team types</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">Interaction modes</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Primary team type</div></div>
+  <div class="stat"><div class="num">∞</div><div class="label">Conway's Law impact</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#why">Why team topology matters</a></li><li><a href="#conways-law">Conway's Law</a></li><li><a href="#cognitive-load">Cognitive load</a></li></ul>
+  <h3>Team Types</h3>
+  <ul>
+    <li><a href="#stream-aligned">Stream-aligned</a></li>
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#enabling">Enabling</a></li>
+    <li><a href="#complicated">Complicated-subsystem</a></li>
+  </ul>
+  <h3>Interactions</h3>
+  <ul><li><a href="#interactions">3 interaction modes</a></li><li><a href="#evolving">Evolving topologies</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="why">
+  <div class="section-label">Foundation</div>
+  <h2>Why Team <em>Topology</em> Matters</h2>
+  <p>Team Topologies (the book by Matthew Skelton and Manuel Pais) provides a model for designing organisations around fast flow of software delivery. The core insight: how you structure teams determines what software architecture you can build — and how fast you can change it.</p>
+  <p>Most organisational problems — slow delivery, endless coordination overhead, blocked teams — are actually topology problems. The wrong team structure generates the wrong communication patterns, which generates the wrong software.</p>
+  <div class="callout"><strong>Team Topologies is not an org chart framework.</strong> It is a model for thinking about team interactions and cognitive load — used dynamically, not drawn once and frozen.</div>
+</div>
+
+<div class="section" id="conways-law">
+  <div class="section-label">Foundation</div>
+  <h2><em>Conway's Law</em></h2>
+  <pre>"Any organisation that designs a system will produce a design
+whose structure is a copy of the organisation's communication structure."
+— Melvin Conway, 1967
+
+In practice:
+→ Teams with high coordination overhead → tightly coupled software
+→ Siloed teams → siloed architecture with integration problems
+→ One team owns payments → payments service has one interface
+
+Inverse Conway Manoeuvre:
+→ Design the team structure you want FIRST
+→ The architecture will follow
+→ Want microservices? → create teams with bounded domains first
+→ Want a platform? → create a dedicated platform team first</pre>
+</div>
+
+<div class="section" id="cognitive-load">
+  <div class="section-label">Foundation</div>
+  <h2><em>Cognitive Load</em></h2>
+  <p>Every team has a finite capacity to understand and manage the systems they own. Cognitive load is the total mental effort required to maintain, build, and operate those systems. Teams that exceed their cognitive load slow down, make mistakes, and burn out.</p>
+  <pre>Three types of cognitive load:
+Intrinsic   → Fundamental complexity of the domain (unavoidable)
+Extraneous  → Process and coordination overhead (eliminate this)
+Germane     → Learning and skill-building (invest in this)
+
+Team Topologies goal:
+→ Minimise extraneous cognitive load through good topology
+→ Cap team scope so intrinsic load stays manageable
+→ Use enabling teams to build germane load (capability)
+
+Signals that a team is overloaded:
+→ Onboarding new members takes months
+→ Fear of touching certain parts of the codebase
+→ No time for anything except firefighting
+→ "We can't do that — it touches too many systems"</pre>
+</div>
+
+<div class="section" id="types">
+  <div class="section-label">Team Types</div>
+  <h2>The Four <em>Team Types</em></h2>
+
+  <div class="team-card" id="stream-aligned">
+    <div class="th"><div class="team-badge sa">Stream-Aligned</div><div class="team-title">Primary delivery team type</div></div>
+    <div class="team-body">
+      <p>Aligned to a single flow of work — a product, service, customer journey, or user persona. The most important team type: the goal of the entire topology is to support and unblock stream-aligned teams.</p>
+      <pre>Characteristics:
+→ Long-lived, stable team (not project-based)
+→ End-to-end ownership from idea to production
+→ Full stack capability (design, dev, test, ops)
+→ Empowered to make technology decisions
+→ Minimal external dependencies to ship
+
+Examples:
+→ "Checkout team" (owns the checkout flow end-to-end)
+→ "Mobile team" (owns the iOS and Android apps)
+→ "Growth team" (owns acquisition and activation)
+
+What they need from other teams:
+→ Platform team to provide internal services as self-service
+→ Enabling team to upskill on new capabilities
+→ Complicated-subsystem team for specialist components</pre>
+    </div>
+  </div>
+
+  <div class="team-card" id="platform">
+    <div class="th"><div class="team-badge pl">Platform</div><div class="team-title">Reduces cognitive load for stream-aligned teams</div></div>
+    <div class="team-body">
+      <p>Provides a curated, self-service internal platform that stream-aligned teams use to build and ship faster. The platform team's product is its internal customers — stream-aligned teams.</p>
+      <pre>Characteristics:
+→ Treats internal teams as customers
+→ Self-service API/tooling (not ticket-based)
+→ Provides "golden paths" — opinionated, well-lit routes
+→ Absorbs complexity so stream teams don't have to
+
+Examples:
+→ Developer platform team (CI/CD, environments, observability)
+→ Data platform team (pipelines, warehouse, BI infrastructure)
+→ Security platform team (auth, secrets, compliance tooling)
+
+Success metric:
+"Stream-aligned teams can ship features independently
+ using the platform, without raising a ticket to our team."</pre>
+    </div>
+  </div>
+
+  <div class="team-card" id="enabling">
+    <div class="th"><div class="team-badge en">Enabling</div><div class="team-title">Grows capability in stream-aligned teams</div></div>
+    <div class="team-body">
+      <p>A temporary team of specialists that helps stream-aligned teams acquire capabilities they currently lack — then steps back. Enabling teams are coaches, not permanent service providers.</p>
+      <pre>Characteristics:
+→ Temporary engagement (weeks to months, not forever)
+→ Teach and leave; do not create permanent dependency
+→ Focus: upskill the stream team, not do the work for them
+→ Proactively identify emerging capability gaps
+
+Examples:
+→ DevOps enabling team (embeds to roll out CI/CD practices)
+→ Accessibility team (teaches accessibility; team then owns it)
+→ Security champions team (trains and certifies team members)
+
+Anti-pattern: enabling team that never leaves
+→ If an enabling team is permanent, it has become a service team
+   or a bottleneck — both are wrong</pre>
+    </div>
+  </div>
+
+  <div class="team-card" id="complicated">
+    <div class="th"><div class="team-badge cs">Complicated-Subsystem</div><div class="team-title">Isolates specialist complexity</div></div>
+    <div class="team-body">
+      <p>Owns a specific component requiring deep specialist knowledge that would overwhelm a stream-aligned team. The component is exposed as a service or library — not as a bottleneck.</p>
+      <pre>Characteristics:
+→ Deep specialist expertise (maths, physics, signal processing, ML)
+→ Exposes well-defined interfaces; not a coordination point
+→ Stream teams consume output — do not need to understand internals
+→ Used sparingly — most teams should not be this type
+
+Examples:
+→ Video encoding team (FFmpeg specialists; exposes encoding API)
+→ Fraud detection ML team (statistical models; exposes a scoring API)
+→ Search relevance team (Elasticsearch tuning; exposes search API)
+
+When to use:
+Only when the cognitive load of the subsystem is genuinely too high
+for a stream-aligned team to own AND use simultaneously.</pre>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="interactions">
+  <div class="section-label">Interactions</div>
+  <h2>3 <em>Interaction Modes</em></h2>
+  <p>How teams interact is as important as how they are structured. Team Topologies defines three explicit interaction modes. Each is appropriate in certain contexts and should evolve over time.</p>
+  <div class="interaction-grid">
+    <div class="interaction-card"><div class="icon">🤝</div><div class="name">Collaboration</div><div class="desc">Two teams work closely together on a shared problem for a defined period. High bandwidth, high cost. Use for discovering new things — not for steady-state.</div></div>
+    <div class="interaction-card"><div class="icon">🛒</div><div class="name">X-as-a-Service</div><div class="desc">One team consumes another's API/service with minimal interaction. Low bandwidth, scalable. The goal state for platform → stream-aligned interactions.</div></div>
+    <div class="interaction-card"><div class="icon">📚</div><div class="name">Facilitating</div><div class="desc">One team helps another grow capability. Enabling team → stream-aligned team. Temporary by design; ends when capability is transferred.</div></div>
+  </div>
+  <pre>Interaction mode evolution:
+New capability discovery → Collaboration (2–3 teams work closely)
+Capability stabilises    → X-as-a-Service (platform exposes API)
+Upskilling needed        → Facilitating (enabling team coaches)
+
+Healthy flow:
+Stream team ←X-as-a-Service← Platform team
+Stream team ←Facilitating← Enabling team
+Stream team ↔ Collaboration ↔ Stream team (temporarily)</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Component teams everywhere</td><td>Every feature requires 3+ teams; coordination is the work</td><td>Reorganise into stream-aligned feature teams with end-to-end ownership</td></tr>
+    <tr><td>Platform team as ticket system</td><td>Stream teams raise tickets; platform team is a bottleneck</td><td>Platform must be self-service; X-as-a-Service interaction mode</td></tr>
+    <tr><td>Enabling team never leaves</td><td>Permanent dependency; stream team never owns the capability</td><td>Define exit criteria upfront; enabling team withdraws on schedule</td></tr>
+    <tr><td>Too many team types</td><td>Every team is a complicated-subsystem team; no stream teams exist</td><td>Stream-aligned teams are the primary type; everything else supports them</td></tr>
+    <tr><td>Ignoring cognitive load</td><td>Stream team owns 8 services; nothing ships; morale crashes</td><td>Measure cognitive load; cap scope per team; split or offload</td></tr>
+    <tr><td>Topology drawn once, never updated</td><td>Org structure freezes as software evolves</td><td>Topology should evolve as software architecture and team capabilities evolve</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Team Topologies <em>Cheat Sheet</em></h2>
+  <pre>4 Team Types
+Stream-Aligned      → primary type; owns flow end-to-end
+Platform            → reduces cognitive load via self-service
+Enabling            → grows stream team capability; temporary
+Complicated-Subsystem → isolates specialist complexity as a service
+
+3 Interaction Modes
+Collaboration  → close work on discovery; high cost; time-limited
+X-as-a-Service → consume API/service; low overhead; steady-state goal
+Facilitating   → enabling team teaches; ends when capability transferred
+
+Key principles
+→ Conway's Law: team structure → software structure
+→ Inverse Conway: design the team structure you want first
+→ Cognitive load: cap team scope; eliminate extraneous complexity
+→ Stream teams are the goal; all other types exist to support them
+
+Signals you need a topology change
+→ Teams blocked waiting on other teams every sprint
+→ "Simple" features require 4+ teams to coordinate
+→ Platform team drowning in tickets from stream teams
+→ Onboarding takes months; fear of touching systems</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-topologies · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

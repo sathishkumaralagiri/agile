@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Psychological Safety Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}.card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  .westrum-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin:1.5rem 0}
+  .westrum-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem}
+  .westrum-card .wname{font-weight:600;font-size:.9rem;margin-bottom:.5rem}
+  .westrum-card .wname.path{color:#ef4444}.westrum-card .wname.bure{color:#f59e0b}.westrum-card .wname.gen{color:#10b981}
+  .westrum-card ul{list-style:none}.westrum-card ul li{font-size:.75rem;color:var(--muted);padding:.15rem 0}
+  .westrum-card ul li::before{content:"→ ";color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.westrum-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-safety</span>
+  <span class="spacer"></span>
+  <a href="#westrum">Westrum Model</a><a href="#measuring">Measuring</a><a href="#building">Building It</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-safety" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-safety · v1.0</div>
+  <h1><em>Psychological Safety</em></h1>
+  <p>Westrum culture model, how to measure safety, and how to build it deliberately — the foundation that makes every agile practice actually work.</p>
+  <div class="hero-links">
+    <a href="#westrum">Westrum Model →</a>
+    <a href="#measuring" class="ghost">Measuring</a>
+    <a href="#building" class="ghost">Building It</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">#1</div><div class="label">Project Aristotle factor</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">Westrum culture types</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Survey questions</div></div>
+  <div class="stat"><div class="num">∞</div><div class="label">Impact on learning</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#what">What is psych safety?</a></li><li><a href="#why">Why it matters</a></li></ul>
+  <h3>Culture Models</h3>
+  <ul><li><a href="#westrum">Westrum model</a></li><li><a href="#four-stages">4 stages of safety</a></li></ul>
+  <h3>Measurement</h3>
+  <ul><li><a href="#measuring">Measuring safety</a></li><li><a href="#survey">The 7-question survey</a></li><li><a href="#signals">Observable signals</a></li></ul>
+  <h3>Building It</h3>
+  <ul><li><a href="#building">Leader behaviours</a></li><li><a href="#practices">Team practices</a></li><li><a href="#blameless">Blameless culture</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="what">
+  <div class="section-label">Foundation</div>
+  <h2>What is <em>Psychological Safety</em>?</h2>
+  <p>Psychological safety is the belief that one will not be punished or humiliated for speaking up with ideas, questions, concerns, or mistakes. It was identified by Harvard professor Amy Edmondson as the single most important factor in high-performing teams.</p>
+  <p>Google's Project Aristotle (2016) confirmed this in a five-year study of 180 teams: psychological safety was the number one predictor of team effectiveness — more important than individual talent, clarity of roles, or the right mix of personalities.</p>
+  <div class="callout"><strong>Psychological safety is not comfort.</strong> It is not about being nice, avoiding conflict, or never disagreeing. It is the confidence that the team is a safe place to take interpersonal risks — to raise hard questions, disagree with the boss, admit you don't know.</div>
+</div>
+
+<div class="section" id="westrum">
+  <div class="section-label">Culture Models</div>
+  <h2>The <em>Westrum</em> Culture Model</h2>
+  <p>Sociologist Ron Westrum described three organisational culture types that predict how information flows — and how teams respond to failure. The DevOps Research and Assessment (DORA) program confirmed that Westrum's generative culture predicts elite software delivery performance.</p>
+  <div class="westrum-grid">
+    <div class="westrum-card">
+      <div class="wname path">Pathological</div>
+      <ul>
+        <li>Power-oriented</li>
+        <li>Low cooperation</li>
+        <li>Messengers shot</li>
+        <li>Failure hidden</li>
+        <li>Responsibility shirked</li>
+        <li>Novelty crushed</li>
+      </ul>
+    </div>
+    <div class="westrum-card">
+      <div class="wname bure">Bureaucratic</div>
+      <ul>
+        <li>Rule-oriented</li>
+        <li>Modest cooperation</li>
+        <li>Messengers neglected</li>
+        <li>Failure leads to justice</li>
+        <li>Narrow responsibility</li>
+        <li>Novelty creates problems</li>
+      </ul>
+    </div>
+    <div class="westrum-card">
+      <div class="wname gen">Generative</div>
+      <ul>
+        <li>Performance-oriented</li>
+        <li>High cooperation</li>
+        <li>Messengers trained</li>
+        <li>Failure leads to inquiry</li>
+        <li>Shared responsibility</li>
+        <li>Novelty implemented</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info"><strong>DORA finding:</strong> Generative culture predicts both higher software delivery performance (DORA metrics) and better organisational outcomes. It is not a "soft" concern — it is a performance driver.</div>
+</div>
+
+<div class="section" id="four-stages">
+  <div class="section-label">Culture Models</div>
+  <h2>4 Stages of <em>Safety</em></h2>
+  <p>Timothy Clark's model identifies four progressive stages of psychological safety that teams move through.</p>
+  <table>
+    <tr><th>Stage</th><th>Safety to…</th><th>What it enables</th></tr>
+    <tr><td>1 — Inclusion</td><td>Be yourself without fear of rejection</td><td>Basic belonging; showing up as a whole person</td></tr>
+    <tr><td>2 — Learner</td><td>Ask questions, make mistakes, experiment</td><td>Learning, curiosity, intellectual risk-taking</td></tr>
+    <tr><td>3 — Contributor</td><td>Offer your best work without fear of judgement</td><td>Innovation, ownership, going beyond minimum effort</td></tr>
+    <tr><td>4 — Challenger</td><td>Question the status quo without fear of retaliation</td><td>Dissent, speaking truth to power, early failure signals</td></tr>
+  </table>
+  <div class="callout"><strong>Most teams get stuck at Stage 2.</strong> People ask questions but won't challenge senior decisions. Stage 4 is where the most valuable safety-related outcomes occur — it is also the hardest to create and the first to be lost.</div>
+</div>
+
+<div class="section" id="survey">
+  <div class="section-label">Measurement</div>
+  <h2>The 7-Question <em>Survey</em></h2>
+  <p>Amy Edmondson's validated psychological safety survey. Respondents rate each statement on a 1–7 Likert scale (Strongly Disagree → Strongly Agree). Run anonymously, quarterly.</p>
+  <pre>Psychological Safety Scale (Edmondson, 1999)
+Note: items 2, 6, 7 are reverse-scored
+
+1. "If you make a mistake on this team, it is often held against you." (R)
+2. "Members of this team are able to bring up problems and tough issues."
+3. "People on this team sometimes reject others for being different." (R)
+4. "It is safe to take a risk on this team."
+5. "It is difficult to ask other members of this team for help." (R)
+6. "No one on this team would deliberately act in a way that undermines
+    my efforts."
+7. "Working with members of this team, my unique skills and talents are
+    valued and utilised."
+
+Scoring:
+Reverse items (R): 8 minus the score given.
+Team score = mean of all items across all respondents.
+&lt;4.5 → significant issues requiring action
+4.5–5.5 → moderate; room for improvement
+&gt;5.5 → healthy (not complacent — check for Stage 4 safety)</pre>
+</div>
+
+<div class="section" id="signals">
+  <div class="section-label">Measurement</div>
+  <h2>Observable <em>Signals</em></h2>
+  <pre>High psychological safety — observable behaviours:
+✓ People admit mistakes openly; bring bad news early
+✓ Junior team members challenge senior decisions in meetings
+✓ Retrospectives surface real issues, not safe platitudes
+✓ People ask "dumb" questions without apology
+✓ Disagreement is direct and heard; no passive-aggressive undercurrent
+✓ Post-mortems are blame-free; root cause is the focus
+✓ People advocate for ideas without requiring approval first
+
+Low psychological safety — warning signals:
+⚠ Silence in meetings; questions only asked privately
+⚠ "Everything is fine" in retros despite clearly visible problems
+⚠ Errors discovered late; nobody flagged early signs
+⚠ Ideas attributed upward; people don't take credit for their work
+⚠ High attrition in high-performers; low performers stay
+⚠ "That's above my pay grade" as a deflection
+⚠ Meeting-after-the-meeting is where real opinions surface</pre>
+</div>
+
+<div class="section" id="building">
+  <div class="section-label">Building It</div>
+  <h2>Leader <em>Behaviours</em></h2>
+  <p>Psychological safety is primarily set by leader behaviour — not by team-building activities or stated values. These are the specific, observable behaviours that build it.</p>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🙋</div><div class="title">Model vulnerability</div><div class="desc">Admit your own mistakes and limitations openly. Leaders who say "I was wrong" give everyone permission to be wrong.</div></div>
+    <div class="card"><div class="icon">🤔</div><div class="title">Ask questions, don't give answers</div><div class="desc">"What do you think?" creates more input than "Here's what we'll do." Ask genuinely and then listen.</div></div>
+    <div class="card"><div class="icon">👏</div><div class="title">Reward candour</div><div class="desc">When someone surfaces a problem early or disagrees publicly, thank them visibly. This signals that candour is safe.</div></div>
+    <div class="card"><div class="icon">🛡</div><div class="title">Protect dissenters</div><div class="desc">When someone is ridiculed or dismissed for speaking up, intervene immediately — even if their point was wrong.</div></div>
+    <div class="card"><div class="icon">📬</div><div class="title">Respond to bad news well</div><div class="desc">The first response to a problem sets the tone. Curiosity before criticism. "Tell me more" before "why did you..."</div></div>
+    <div class="card"><div class="icon">🔄</div><div class="title">Follow through</div><div class="desc">Safety collapses when concerns are raised and nothing changes. Close the loop — always.</div></div>
+  </div>
+</div>
+
+<div class="section" id="practices">
+  <div class="section-label">Building It</div>
+  <h2>Team <em>Practices</em></h2>
+  <pre>Retrospective practices that build safety:
+→ Anonymous pre-work before discussion (equalises voice)
+→ Separate data gathering from interpretation ("What happened?"
+   before "Why did it happen?")
+→ "What I appreciated about this sprint..." as a warm-up
+→ Rotate facilitation (reduces dominance by one voice)
+→ What's said in the retro stays in the retro (make it explicit)
+
+Meeting practices:
+→ Call on quiet voices: "We haven't heard from [name] yet"
+→ "Yes, and..." before redirecting
+→ Last-person-to-speak rule: senior-most person speaks last
+→ Share meeting agenda in advance; give people time to prepare
+
+Hiring and onboarding:
+→ Share norms explicitly: "Here, we say 'I don't know' freely"
+→ New hire 30-day check-in: "Has anything surprised or confused you?"
+→ Celebrate new joiners' challenges to existing practices</pre>
+</div>
+
+<div class="section" id="blameless">
+  <div class="section-label">Building It</div>
+  <h2>Blameless <em>Culture</em></h2>
+  <pre>Blameless post-mortem format (for incidents and failures):
+1. Timeline — what happened, in order, factually
+2. Contributing factors — what system conditions made this possible?
+3. Human factors — where did human judgement fail or succeed?
+   (describe actions, not intent)
+4. What went well — what prevented the situation from being worse?
+5. Action items — what will we change in systems, process, or tooling?
+
+Rules:
+→ No names in the written post-mortem (except action owners)
+→ "How could we have prevented this?" not "Who caused this?"
+→ Published openly; accessible to the whole team
+→ Actions tracked to completion
+
+Blameless ≠ accountability-free:
+Individuals are still responsible for their actions and their commitments.
+Blameless means: we assume good intent, we look for systemic causes,
+and we do not punish honest mistakes that surfaced an important truth.</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Safety as comfort</td><td>"Psychological safety" used to avoid difficult feedback or standards</td><td>Safety enables candour; it is not a shield against accountability</td></tr>
+    <tr><td>One-time workshops</td><td>"We did a safety training" — nothing changed day-to-day</td><td>Safety is built through consistent daily leader behaviour, not events</td></tr>
+    <tr><td>Anonymous surveys without action</td><td>Team scores safety; nothing changes; trust erodes further</td><td>Survey results must produce visible, specific actions within 2 weeks</td></tr>
+    <tr><td>Silent meetings accepted</td><td>Leader interprets silence as agreement; dissent goes underground</td><td>Silence is a signal; call on quiet voices; use anonymous input tools</td></tr>
+    <tr><td>Postmortems with blame</td><td>Engineers hide problems; surface issues only after they escalate</td><td>Blameless post-mortems; published openly; actions tracked to completion</td></tr>
+    <tr><td>Safety only for senior voices</td><td>Junior team members still don't speak up; one voice dominates</td><td>Rotate facilitation; speak-last rule for leaders; actively protect dissenters</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Psychological Safety <em>Cheat Sheet</em></h2>
+  <pre>Definition
+The belief that one will not be punished for speaking up
+with ideas, questions, concerns, or mistakes.
+
+Why it matters
+→ #1 predictor of team effectiveness (Google Project Aristotle)
+→ Generative culture predicts elite DORA metrics (DORA research)
+→ Without it: hidden problems, slow learning, false consensus
+
+Westrum cultures
+Pathological  → power-oriented; information hidden; failure punished
+Bureaucratic  → rule-oriented; failure leads to blame
+Generative    → performance-oriented; failure leads to inquiry
+
+4 Stages of safety (Clark)
+1. Inclusion → 2. Learner → 3. Contributor → 4. Challenger
+
+Measuring (Edmondson survey, 1–7 scale)
+&lt;4.5 → significant issues · 4.5–5.5 → moderate · &gt;5.5 → healthy
+
+Leader behaviours that build safety
+→ Model vulnerability (admit your own mistakes openly)
+→ Ask questions; listen to the answers
+→ Reward candour publicly; thank people who surface problems
+→ Protect dissenters; respond to bad news with curiosity
+→ Follow through on every concern raised
+
+Blameless postmortems
+→ No names in written document
+→ System causes, not human blame
+→ Published openly; actions tracked</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-safety · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

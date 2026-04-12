@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Technical Debt Management Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}.card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  .card .tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);padding:.15rem .5rem;font-family:'Courier New',monospace;font-size:.65rem;color:var(--muted);border-radius:3px;margin-top:.5rem}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-techdebt</span>
+  <span class="spacer"></span>
+  <a href="#types">Types</a><a href="#tracking">Tracking</a><a href="#strategies">Strategies</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-techdebt" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-techdebt · v1.0</div>
+  <h1>Technical <em>Debt</em> Management</h1>
+  <p>How to identify, classify, measure, and pay down technical debt within the rhythm of sprint delivery — without stopping the product.</p>
+  <div class="hero-links">
+    <a href="#types">Types →</a><a href="#tracking" class="ghost">Tracking</a><a href="#strategies" class="ghost">Strategies</a><a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">4</div><div class="label">Debt quadrants</div></div>
+  <div class="stat"><div class="num">20%</div><div class="label">Recommended capacity</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">Paydown strategies</div></div>
+  <div class="stat"><div class="num">6</div><div class="label">Detection signals</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#definition">What is tech debt?</a></li><li><a href="#quadrants">Debt quadrants</a></li><li><a href="#types">Types of debt</a></li></ul>
+  <h3>Measurement</h3>
+  <ul><li><a href="#signals">Detection signals</a></li><li><a href="#tracking">Tracking debt</a></li><li><a href="#cost">Cost of delay</a></li></ul>
+  <h3>Management</h3>
+  <ul><li><a href="#strategies">Paydown strategies</a></li><li><a href="#capacity">Capacity allocation</a></li><li><a href="#prevention">Prevention</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="definition">
+  <div class="section-label">Foundation</div>
+  <h2>What is <em>Technical Debt</em>?</h2>
+  <p>Technical debt is the implied cost of rework caused by choosing an easy solution now instead of a better one that would take longer. Like financial debt, it accrues interest — small problems become systemic if left unpaid.</p>
+  <p>Ward Cunningham coined the metaphor in 1992. The key insight: debt isn't inherently bad. Deliberate, short-term debt can be a rational business decision. Inadvertent debt accumulating silently is what destroys velocity over time.</p>
+  <div class="callout"><strong>Tech debt ≠ bad code.</strong> It is a decision to ship something less-than-ideal now in exchange for speed. The problem is when the "later" to fix it never arrives.</div>
+</div>
+
+<div class="section" id="quadrants">
+  <div class="section-label">Classification</div>
+  <h2>The Debt <em>Quadrants</em></h2>
+  <p>Martin Fowler's quadrant classifies debt along two axes: deliberate vs. inadvertent, and reckless vs. prudent.</p>
+  <table>
+    <tr><th></th><th>Reckless</th><th>Prudent</th></tr>
+    <tr><td><strong>Deliberate</strong></td><td>"We don't have time for design" — knowingly cutting corners</td><td>"We must ship now and deal with consequences later" — conscious tradeoff</td></tr>
+    <tr><td><strong>Inadvertent</strong></td><td>"What is layered architecture?" — didn't know better</td><td>"Now we know how we should have done it" — discovered in hindsight</td></tr>
+  </table>
+  <div class="callout info"><strong>Only Prudent-Deliberate debt is managed well.</strong> Reckless debt is simply negligence. Inadvertent debt is addressed through learning and refactoring.</div>
+</div>
+
+<div class="section" id="types">
+  <div class="section-label">Classification</div>
+  <h2>Types of <em>Technical Debt</em></h2>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🏗</div><div class="title">Architectural Debt</div><div class="desc">Wrong structural decisions: monolith that should be services, missing abstraction layers, tightly coupled modules.</div><div class="tag">High impact</div></div>
+    <div class="card"><div class="icon">🧹</div><div class="title">Code Debt</div><div class="desc">Duplicated code, long functions, missing tests, poor naming — issues caught in code review but deferred.</div><div class="tag">Common</div></div>
+    <div class="card"><div class="icon">📦</div><div class="title">Dependency Debt</div><div class="desc">Outdated libraries, deprecated APIs, unmaintained packages with security vulnerabilities.</div><div class="tag">Security risk</div></div>
+    <div class="card"><div class="icon">📝</div><div class="title">Documentation Debt</div><div class="desc">Missing ADRs, outdated READMEs, undocumented APIs — knowledge lives only in people's heads.</div><div class="tag">Ops risk</div></div>
+    <div class="card"><div class="icon">🧪</div><div class="title">Test Debt</div><div class="desc">Low coverage, flaky tests, missing integration tests — the safety net has holes.</div><div class="tag">Quality risk</div></div>
+    <div class="card"><div class="icon">🚀</div><div class="title">Infrastructure Debt</div><div class="desc">Manual deployments, missing monitoring, no alerting, environments that drift from production.</div><div class="tag">Reliability</div></div>
+  </div>
+</div>
+
+<div class="section" id="signals">
+  <div class="section-label">Measurement</div>
+  <h2>Detection <em>Signals</em></h2>
+  <p>Technical debt reveals itself through measurable symptoms. These are the signals to track:</p>
+  <pre>1. Cycle time increasing         → features take longer than they used to
+2. Bug rate increasing            → more defects per sprint than 6 months ago
+3. Onboarding time increasing     → new engineers take months to contribute
+4. Fear of change                 → team avoids certain modules
+5. Test suite runtime increasing  → CI pipeline slowing down quarter on quarter
+6. "Simple" features aren't       → "small" stories consistently pull in hidden complexity</pre>
+  <div class="callout"><strong>The key measurement:</strong> track the ratio of time spent on new features vs. rework and firefighting. If rework exceeds 30% of sprint capacity, debt is actively degrading delivery speed.</div>
+</div>
+
+<div class="section" id="tracking">
+  <div class="section-label">Measurement</div>
+  <h2>Tracking <em>Debt</em></h2>
+  <p>Untracked debt is unmanaged debt. Teams need a lightweight system to make debt visible to the PO and stakeholders without turning it into a second backlog.</p>
+  <pre>Option 1 — Tech Debt Backlog (pragmatic)
+→ Separate backlog section labelled "Technical Enablers"
+→ Each item has: description, impact (High/Med/Low), estimated cost
+→ PO reviews and prioritises against feature work each sprint
+→ Target: process at least 2–3 items per sprint
+
+Option 2 — Debt Tags in existing backlog
+→ Tag user stories that include hidden debt ("carries-debt")
+→ Linked remediation stories created immediately
+→ Remediation scheduled within 2 sprints
+
+Option 3 — Debt register (spreadsheet/wiki)
+→ ID, type, description, discovery date, owner, estimated hours
+→ Reviewed at Sprint Retrospective monthly
+→ Items scoring High impact + Low cost → next sprint</pre>
+</div>
+
+<div class="section" id="strategies">
+  <div class="section-label">Management</div>
+  <h2>Paydown <em>Strategies</em></h2>
+  <table>
+    <tr><th>Strategy</th><th>How it works</th><th>Best for</th></tr>
+    <tr><td>Boy Scout Rule</td><td>Leave code cleaner than you found it. Refactor opportunistically when touching a module.</td><td>Code debt, incremental improvement, low-risk</td></tr>
+    <tr><td>Allocated capacity</td><td>Reserve 15–20% of sprint capacity for debt items. Scheduled every sprint, not ad hoc.</td><td>Teams with consistent debt accumulation</td></tr>
+    <tr><td>Hardening sprint</td><td>Dedicated sprint (once per quarter) with no new features — only refactoring, tests, documentation.</td><td>Heavy debt; major architectural changes</td></tr>
+    <tr><td>Strangler Fig pattern</td><td>Gradually replace a problematic system component without a big-bang rewrite. New code wraps old.</td><td>Architectural debt; legacy systems</td></tr>
+    <tr><td>Feature flags + parallel builds</td><td>New architecture built in parallel; traffic migrated incrementally; old code deleted when safe.</td><td>Infrastructure debt; high-risk replacements</td></tr>
+  </table>
+</div>
+
+<div class="section" id="capacity">
+  <div class="section-label">Management</div>
+  <h2>Capacity <em>Allocation</em></h2>
+  <pre>Recommended allocation by debt level:
+
+Low debt  (healthy codebase): 10–15% per sprint
+Med debt  (slowing delivery): 15–25% per sprint
+High debt (firefighting mode): 25–40% per sprint
+
+Making it visible to stakeholders:
+→ Frame debt work in terms of delivery impact
+   "We're spending 30% of each sprint fighting fires from this module.
+    2 sprints of focused refactoring will reduce that to &lt;5%."
+→ Show trend: feature throughput going DOWN = debt going UP
+→ Compare "debt cost" to "feature opportunity cost"</pre>
+  <div class="callout"><strong>Never negotiate away all debt time.</strong> Teams that promise 100% feature delivery have nowhere to go when debt slows them down — and they always slow down.</div>
+</div>
+
+<div class="section" id="prevention">
+  <div class="section-label">Management</div>
+  <h2><em>Prevention</em> Practices</h2>
+  <pre>Architectural Decision Records (ADRs)
+→ Document the context and reasoning behind key technical decisions
+→ Format: Title / Status / Context / Decision / Consequences
+→ Stored in the repo; updated when decisions change
+
+Definition of Done — tech quality gates
+✓ Code reviewed by at least one other developer
+✓ Unit test coverage meets team threshold (e.g. 80%)
+✓ No new Sonar/linting violations introduced
+✓ Dependencies updated if touched
+✓ ADR created for any new architectural decision
+
+Regular "debt audits"
+→ Once per quarter: review tech debt register
+→ Identify highest-impact items
+→ Schedule at least one hardening sprint per year</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Debt as invisible work</td><td>Stakeholders don't know it exists; velocity looks fine until it crashes</td><td>Make debt visible in the backlog with business impact framing</td></tr>
+    <tr><td>Debt sprint once a year</td><td>12 months of accumulation requires months to pay down; not sustainable</td><td>Allocate 15–20% every sprint; continuous paydown</td></tr>
+    <tr><td>Complete rewrite</td><td>Second-system effect; new system has all the hidden business logic errors the old one solved</td><td>Strangler Fig pattern; incremental replacement</td></tr>
+    <tr><td>Blaming the previous team</td><td>Demoralises; doesn't fix the debt; misses the systemic cause</td><td>Blameless retro; understand why the debt accumulated</td></tr>
+    <tr><td>Debt as developer excuse</td><td>"We can't ship because of tech debt" without data</td><td>Quantify: show cycle time trends, bug rates, rework %</td></tr>
+    <tr><td>No DoD quality gates</td><td>New features ship with embedded debt from day one</td><td>DoD must include code quality, test coverage, no regression</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>Tech Debt <em>Cheat Sheet</em></h2>
+  <pre>Quadrants
+Deliberate + Prudent  → managed tradeoff; pay back soon
+Deliberate + Reckless → negligence; address immediately
+Inadvertent           → fix through refactoring and learning
+
+Types
+Architectural · Code · Dependency · Documentation · Test · Infrastructure
+
+Detection signals
+→ Cycle time increasing
+→ Bug rate increasing
+→ Rework &gt;30% of sprint capacity
+→ "Simple" stories aren't simple
+
+Capacity allocation
+Low debt   → 10–15%/sprint
+Medium     → 15–25%/sprint
+High debt  → 25–40%/sprint
+
+Paydown strategies
+Boy Scout Rule      → refactor opportunistically when touching code
+Allocated capacity  → 15–20% every sprint, non-negotiable
+Hardening sprint    → quarterly, no new features
+Strangler Fig       → incremental architectural replacement
+
+Prevention
+→ ADRs for all architectural decisions
+→ DoD includes quality gates
+→ Quarterly debt audit</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-techdebt · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

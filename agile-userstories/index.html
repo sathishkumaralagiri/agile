@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>User Story Writing Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .invest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1.5rem 0}
+  .invest-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem}
+  .invest-card .letter{font-family:'Courier New',monospace;font-size:2rem;font-weight:bold;color:var(--accent);line-height:1}
+  .invest-card .word{font-size:.85rem;font-weight:600;margin:.25rem 0}
+  .invest-card .desc{font-size:.78rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.invest-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-userstories</span>
+  <span class="spacer"></span>
+  <a href="#format">Format</a><a href="#invest">INVEST</a><a href="#splitting">Splitting</a><a href="#acceptance">ACs</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-userstories" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-userstories · v1.0</div>
+  <h1>User <em>Story</em> Writing Reference</h1>
+  <p>As a / I want / So that, INVEST criteria, acceptance criteria patterns, story splitting, and the most common mistakes.</p>
+  <div class="hero-links">
+    <a href="#format">Format →</a><a href="#invest" class="ghost">INVEST</a><a href="#splitting" class="ghost">Splitting</a><a href="#acceptance" class="ghost">ACs</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">6</div><div class="label">INVEST criteria</div></div>
+  <div class="stat"><div class="num">8</div><div class="label">Splitting patterns</div></div>
+  <div class="stat"><div class="num">3</div><div class="label">AC formats</div></div>
+  <div class="stat"><div class="num">9</div><div class="label">Anti-patterns</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#format">Story format</a></li><li><a href="#invest">INVEST criteria</a></li><li><a href="#personas">Personas vs roles</a></li></ul>
+  <h3>Acceptance Criteria</h3>
+  <ul><li><a href="#acceptance">Writing ACs</a></li><li><a href="#gherkin">Gherkin (BDD)</a></li><li><a href="#checklist-ac">Checklist format</a></li></ul>
+  <h3>Story Splitting</h3>
+  <ul><li><a href="#splitting">Why split?</a></li><li><a href="#patterns">8 splitting patterns</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#epics">Epics &amp; themes</a></li><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="format">
+  <div class="section-label">Foundation</div>
+  <h2>The <em>Story</em> Format</h2>
+  <p>A user story is a promise for a conversation — not a specification. The canonical format is:</p>
+  <pre>As a [type of user],
+I want [some goal or action],
+So that [some reason or benefit].
+
+Example:
+As a returning customer,
+I want to save my cart between sessions,
+So that I can complete my purchase later without re-adding items.</pre>
+  <div class="callout"><strong>Stories are conversation starters.</strong> The card is a reminder of the discussion to have — the real value is in the conversation between the team and the customer/PO, not in the written text.</div>
+  <h3>Three Cs</h3>
+  <pre>Card       → the written reminder (a few sentences)
+Conversation → discussion between team and PO/customer
+Confirmation → acceptance criteria that confirm "done"</pre>
+</div>
+
+<div class="section" id="invest">
+  <div class="section-label">Foundation</div>
+  <h2>The <em>INVEST</em> Criteria</h2>
+  <p>A well-formed story is INVEST — a checklist for story quality used during backlog refinement.</p>
+  <div class="invest-grid">
+    <div class="invest-card"><div class="letter">I</div><div class="word">Independent</div><div class="desc">Can be developed in any order. No hard dependency on other stories.</div></div>
+    <div class="invest-card"><div class="letter">N</div><div class="word">Negotiable</div><div class="desc">Details can change until committed. Not a contract — a placeholder for a conversation.</div></div>
+    <div class="invest-card"><div class="letter">V</div><div class="word">Valuable</div><div class="desc">Delivers value to a user or the business. "Technical tasks" that don't create user value should be enablers, not stories.</div></div>
+    <div class="invest-card"><div class="letter">E</div><div class="word">Estimable</div><div class="desc">The team can size the effort. If not, the story needs clarification or splitting.</div></div>
+    <div class="invest-card"><div class="letter">S</div><div class="word">Small</div><div class="desc">Completable within one sprint. "Small" is relative to team velocity — typically 1–5 points.</div></div>
+    <div class="invest-card"><div class="letter">T</div><div class="word">Testable</div><div class="desc">Acceptance criteria can be defined. If you can't test it, you can't know it's done.</div></div>
+  </div>
+</div>
+
+<div class="section" id="acceptance">
+  <div class="section-label">Acceptance Criteria</div>
+  <h2>Writing <em>Acceptance Criteria</em></h2>
+  <p>Acceptance criteria (ACs) are the confirmation conditions that define when a story is Done. They belong on the story before it enters a sprint.</p>
+  <h3>Bullet format (most common)</h3>
+  <pre>Story: As a user, I want to reset my password via email.
+
+Acceptance criteria:
+✓ User can enter their email on the "Forgot password" screen
+✓ A reset link is sent to the email address within 60 seconds
+✓ The reset link expires after 24 hours
+✓ The reset link can only be used once
+✓ User sees an error if the email is not registered
+✓ Success message is shown after password is changed</pre>
+</div>
+
+<div class="section" id="gherkin">
+  <div class="section-label">Acceptance Criteria</div>
+  <h2>Gherkin / <em>BDD</em> Format</h2>
+  <p>Given-When-Then format (Gherkin) is used when ACs need to drive automated acceptance tests (Cucumber, SpecFlow, etc.).</p>
+  <pre>Feature: Password reset
+
+  Scenario: User resets password with valid email
+    Given I am on the "Forgot password" page
+    When I enter a registered email address
+    And I click "Send reset link"
+    Then I see "Check your email for a reset link"
+    And a reset email is delivered within 60 seconds
+
+  Scenario: User enters unregistered email
+    Given I am on the "Forgot password" page
+    When I enter an email not registered in the system
+    And I click "Send reset link"
+    Then I see "If this email is registered, you'll receive a link"
+    And no email is sent</pre>
+  <div class="callout info"><strong>BDD works best</strong> when developers, testers, and the PO write scenarios together — not when a BA writes them in isolation.</div>
+</div>
+
+<div class="section" id="splitting">
+  <div class="section-label">Story Splitting</div>
+  <h2>Why <em>Split</em> Stories?</h2>
+  <p>Large stories (epics) must be split into deliverable slices before entering a sprint. Vertical slices — end-to-end functional pieces — are almost always better than horizontal layers (front end vs back end).</p>
+  <div class="callout"><strong>Bad split:</strong> "Backend for checkout" + "Frontend for checkout" → neither delivers value independently.<br><strong>Good split:</strong> "Cash payment at checkout" + "Card payment at checkout" → each delivers value end-to-end.</div>
+</div>
+
+<div class="section" id="patterns">
+  <div class="section-label">Story Splitting</div>
+  <h2>8 Splitting <em>Patterns</em></h2>
+  <table>
+    <tr><th>Pattern</th><th>Description</th><th>Example</th></tr>
+    <tr><td>By workflow step</td><td>Split a multi-step process into individual steps</td><td>"User registers" → "Enter details" + "Verify email" + "Complete profile"</td></tr>
+    <tr><td>By business rule</td><td>Each rule variation becomes a story</td><td>"Apply discount" → "10% for loyalty" + "20% for bulk" + "Free shipping for premium"</td></tr>
+    <tr><td>By happy/unhappy path</td><td>Separate success and failure scenarios</td><td>"Login" → "Login succeeds" + "Login fails — wrong password" + "Account locked"</td></tr>
+    <tr><td>By user role</td><td>Different actors get different stories</td><td>"Export data" → "Admin exports all" + "User exports own data"</td></tr>
+    <tr><td>By data variation</td><td>Different data types handled separately</td><td>"Search" → "Search by name" + "Search by email" + "Search by date"</td></tr>
+    <tr><td>By CRUD</td><td>Separate create, read, update, delete</td><td>"Manage team" → "View members" + "Add member" + "Remove member"</td></tr>
+    <tr><td>By performance</td><td>Basic function first; performance later</td><td>"Load dashboard" → "Load data (any speed)" + "Load data (&lt;2s)"</td></tr>
+    <tr><td>Spike first</td><td>Research story to reduce uncertainty before implementation</td><td>"Integrate Stripe" → "Research Stripe API options (timebox 1 day)" + "Implement chosen approach"</td></tr>
+  </table>
+</div>
+
+<div class="section" id="epics">
+  <div class="section-label">Hierarchy</div>
+  <h2>Epics, Themes, <em>&amp; Stories</em></h2>
+  <pre>Theme      → a broad area of customer value (e.g. "User authentication")
+  Epic     → a large body of work that spans sprints (e.g. "Single sign-on")
+    Story  → deliverable in one sprint (e.g. "Log in with Google")
+      Task → sub-task within a story (e.g. "Implement OAuth callback")
+
+Rules:
+→ Only Stories enter a sprint backlog — not Epics
+→ Epics are split before sprint planning
+→ Themes are labels, not backlog items
+→ Tasks are created by developers during the sprint</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Stories as tasks</td><td>"Implement the API endpoint" — no user, no value</td><td>Frame around the user outcome, not the technical task</td></tr>
+    <tr><td>Missing "so that"</td><td>Team doesn't understand why; wrong solution risks</td><td>Always articulate the user benefit — it shapes the solution</td></tr>
+    <tr><td>No ACs before planning</td><td>Team commits without knowing what "done" means</td><td>ACs must be agreed before a story enters the sprint</td></tr>
+    <tr><td>Technical stories as first-class</td><td>"Refactor database schema" — no user value</td><td>Frame as enabler, or fold into a user-facing story</td></tr>
+    <tr><td>Horizontal slicing</td><td>Frontend in one sprint, backend in next — neither is shippable</td><td>Vertical slices only: each story delivers end-to-end value</td></tr>
+    <tr><td>Story as specification</td><td>Multi-page document replaces conversation</td><td>3 sentences + ACs; the rest is conversation</td></tr>
+    <tr><td>Stories written solo</td><td>BA writes stories in isolation; team surprised in planning</td><td>Refinement is collaborative: PO + team writes together</td></tr>
+    <tr><td>Giant stories ("epics")</td><td>Can't be completed in a sprint; velocity lies</td><td>Split before the sprint begins; use the 8 splitting patterns</td></tr>
+    <tr><td>Accepting stories without testing them</td><td>PO signs off without checking against ACs</td><td>ACs are the formal acceptance test; PO must verify each criterion</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>User Story <em>Cheat Sheet</em></h2>
+  <pre>Story format
+As a [user type], I want [action], so that [benefit].
+
+INVEST checklist
+I — Independent · N — Negotiable · V — Valuable
+E — Estimable · S — Small · T — Testable
+
+Acceptance criteria formats
+Bullet list  → "✓ User can ... ✓ System shows ..."
+Gherkin/BDD  → Given [context] / When [action] / Then [outcome]
+
+Story hierarchy
+Theme → Epic → Story → Task
+
+Top 3 splitting patterns
+1. By workflow step (most common)
+2. By happy/unhappy path (easy win)
+3. By user role (when actors have different needs)
+
+Quality checks
+→ Does it deliver value independently?
+→ Are ACs defined before planning?
+→ Can it be completed in one sprint?
+→ Would the team know when it's done?</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-userstories · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

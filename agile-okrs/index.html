@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OKRs for Agile Teams Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}.card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-okrs</span>
+  <span class="spacer"></span>
+  <a href="#writing">Writing OKRs</a><a href="#cadence">Cadence</a><a href="#sprint-link">Sprint Link</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-okrs" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-okrs · v1.0</div>
+  <h1><em>OKRs</em> for Agile Teams</h1>
+  <p>Connecting Sprint Goals to company objectives — how to write great OKRs, link them to daily delivery, and avoid the most common traps.</p>
+  <div class="hero-links">
+    <a href="#writing">Writing OKRs →</a>
+    <a href="#cadence" class="ghost">Cadence</a>
+    <a href="#sprint-link" class="ghost">Sprint Link</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">1</div><div class="label">Objective per team</div></div>
+  <div class="stat"><div class="num">3–5</div><div class="label">Key Results per O</div></div>
+  <div class="stat"><div class="num">0.7</div><div class="label">Target score (not 1.0)</div></div>
+  <div class="stat"><div class="num">Q</div><div class="label">Quarterly cadence</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#what">What are OKRs?</a></li><li><a href="#anatomy">Anatomy of an OKR</a></li><li><a href="#types">Committed vs aspirational</a></li></ul>
+  <h3>Writing</h3>
+  <ul><li><a href="#writing">Writing Objectives</a></li><li><a href="#key-results">Writing Key Results</a></li><li><a href="#examples">Full examples</a></li></ul>
+  <h3>Alignment</h3>
+  <ul><li><a href="#alignment">Company → team alignment</a></li><li><a href="#sprint-link">Sprint Goal → OKR link</a></li><li><a href="#cadence">OKR cadence</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#scoring">Scoring OKRs</a></li><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="what">
+  <div class="section-label">Foundation</div>
+  <h2>What are <em>OKRs</em>?</h2>
+  <p>OKRs (Objectives and Key Results) are a goal-setting framework invented at Intel by Andy Grove and popularised by John Doerr at Google. They connect ambitious qualitative goals (Objectives) to measurable outcomes (Key Results) at every level of an organisation.</p>
+  <p>For agile teams, OKRs provide the "why" that Sprint Goals and backlog items deliver against. Without OKRs, teams can execute perfectly and still work on the wrong things.</p>
+  <div class="callout"><strong>OKRs are not performance reviews.</strong> They are a thinking and alignment tool. Attaching compensation to OKR scores destroys the honesty and ambition that makes them useful.</div>
+</div>
+
+<div class="section" id="anatomy">
+  <div class="section-label">Foundation</div>
+  <h2>Anatomy of an <em>OKR</em></h2>
+  <pre>Objective — What do we want to achieve?
+→ Qualitative, inspirational, memorable
+→ Written in plain language; no jargon
+→ Achievable within one quarter (team OKRs)
+→ Answers: "What matters most this quarter?"
+
+Key Result — How will we know we achieved it?
+→ Quantitative and measurable (number, %, date)
+→ Outcome-focused, not activity-focused
+→ 3–5 per Objective
+→ Answers: "How much? By when? Measured how?"
+
+Initiative — What will we do to move the KRs?
+→ Projects, features, experiments — the backlog items
+→ NOT part of the OKR itself; they sit below it
+→ Multiple initiatives can contribute to one KR</pre>
+  <div class="callout info"><strong>Key Results measure outcomes, not outputs.</strong> "Ship feature X" is an output. "Increase checkout completion rate from 62% to 75%" is an outcome.</div>
+</div>
+
+<div class="section" id="types">
+  <div class="section-label">Foundation</div>
+  <h2>Committed vs <em>Aspirational</em> OKRs</h2>
+  <table>
+    <tr><th>Type</th><th>Committed</th><th>Aspirational (Moonshot)</th></tr>
+    <tr><td>Definition</td><td>Must achieve; 1.0 is expected</td><td>Reach for; 0.7 is great</td></tr>
+    <tr><td>Score target</td><td>1.0 — under-delivery is a problem</td><td>0.6–0.7 — 1.0 means it wasn't ambitious enough</td></tr>
+    <tr><td>Example</td><td>"99.9% uptime SLA for payment service"</td><td>"Reduce customer onboarding from 7 days to 1 day"</td></tr>
+    <tr><td>Risk of failure</td><td>High — failure has real consequences</td><td>Acceptable — stretch goals are meant to be hard</td></tr>
+    <tr><td>Scrum link</td><td>Sprint Goals that are hard commitments</td><td>Quarterly OKRs that push beyond comfort</td></tr>
+  </table>
+  <div class="callout"><strong>Google rule of thumb:</strong> 30% Committed OKRs (must deliver), 70% Aspirational (reach goals). Never mix them in a single OKR — label each clearly.</div>
+</div>
+
+<div class="section" id="writing">
+  <div class="section-label">Writing</div>
+  <h2>Writing <em>Objectives</em></h2>
+  <pre>Good Objectives are:
+→ Inspiring and clear without being fluffy
+→ Achievable in one quarter by the team
+→ Written from the customer or business perspective
+→ Memorable enough to recall without looking at a doc
+
+Formula: "We will [verb] [outcome] [so that / for whom]"
+
+Good examples:
+✓ "Make our onboarding experience delightful for new users"
+✓ "Become the most reliable payment processor in our market"
+✓ "Eliminate the top 3 reasons customers churn in month 1"
+
+Bad examples:
+✗ "Improve the platform" — too vague
+✗ "Implement SSO and OAuth" — output, not outcome
+✗ "Continue to support existing customers" — not aspirational</pre>
+</div>
+
+<div class="section" id="key-results">
+  <div class="section-label">Writing</div>
+  <h2>Writing <em>Key Results</em></h2>
+  <pre>Good Key Results are:
+→ Quantitative: a number, %, ratio, or date
+→ Outcome-focused: measure the effect, not the activity
+→ Independently verifiable: no subjectivity in scoring
+→ Meaningful if achieved: moving the number matters to the business
+
+Formula: "[Verb] [metric] from [baseline] to [target]"
+
+Good examples:
+✓ "Increase day-30 retention from 42% to 60%"
+✓ "Reduce mean time to first value from 14 days to 3 days"
+✓ "Achieve NPS &gt;50 for the onboarding flow (currently 28)"
+✓ "Zero P1 incidents caused by our service for 8 consecutive weeks"
+
+Bad examples:
+✗ "Launch the new dashboard" — output, not outcome
+✗ "Improve performance" — no baseline, no target
+✗ "Run 3 user interviews" — activity, not result
+✗ "100% of planned features shipped" — velocity theatre</pre>
+</div>
+
+<div class="section" id="examples">
+  <div class="section-label">Writing</div>
+  <h2>Full <em>OKR Examples</em></h2>
+  <h3>Product team — customer growth</h3>
+  <pre>O: Make activation effortless so new users reach value in minutes, not days
+
+KR1: Reduce time-to-first-key-action from 8 minutes to 3 minutes
+KR2: Increase day-7 retention from 38% to 55%
+KR3: Achieve CSAT ≥4.2/5 on the onboarding survey (currently 3.6)
+KR4: 80% of new users complete setup without contacting support</pre>
+
+  <h3>Engineering team — reliability</h3>
+  <pre>O: Build a platform our customers trust completely
+
+KR1: Achieve 99.95% monthly uptime for all customer-facing services
+KR2: Reduce MTTR from 47 minutes to under 15 minutes
+KR3: Zero P1 incidents for 10 consecutive weeks
+KR4: Deploy frequency reaches daily (currently weekly)</pre>
+
+  <h3>Platform team — developer experience</h3>
+  <pre>O: Make shipping software the easiest part of every engineer's day
+
+KR1: Reduce CI pipeline time from 22 min to under 8 min
+KR2: Developer eNPS for internal tooling rises from 12 to 40
+KR3: 90% of teams can deploy independently without platform team support
+KR4: Zero security vulnerabilities in production older than 5 business days</pre>
+</div>
+
+<div class="section" id="alignment">
+  <div class="section-label">Alignment</div>
+  <h2>Company → Team <em>Alignment</em></h2>
+  <pre>OKR cascade (top-down alignment):
+Company OKR  → "Become the market leader in SMB payroll"
+  Division O → "Make payroll setup the fastest in the market"
+    Team O   → "Eliminate friction from the first payroll run"
+      Sprint Goal → "Enable direct bank connection without manual CSV"
+
+OKR contribution (bottom-up):
+Teams contribute to division OKRs; division to company OKRs.
+Not every team OKR must trace to a company OKR — some are internal
+(reliability, tech debt) and are still valid team-level OKRs.</pre>
+  <div class="callout"><strong>Avoid pure top-down cascade.</strong> The most effective OKR programmes allow 40–60% of team OKRs to be team-generated, not handed down. Teams know their constraints best.</div>
+</div>
+
+<div class="section" id="sprint-link">
+  <div class="section-label">Alignment</div>
+  <h2>Sprint Goal → <em>OKR</em> Link</h2>
+  <pre>Each Sprint Goal should reference the OKR it serves:
+
+Sprint Goal format with OKR link:
+"Enable bank connection via Plaid so new users skip the CSV
+ step entirely — contributing to KR1 (reduce setup time from
+ 8 min to 3 min) of Q2 Objective: Make activation effortless."
+
+Rules:
+→ A Sprint Goal can serve 1–2 KRs; more = unfocused sprint
+→ Not every sprint must directly move a KR (tech debt sprints are valid)
+→ At Sprint Review: "Did this sprint move our KR? By how much?"
+→ PO tracks KR progress monthly; shares at Sprint Review
+
+OKR check-in cadence (within Scrum):
+→ Weekly: PO updates KR scores (0.0–1.0)
+→ Sprint Review: team sees current KR progress
+→ Mid-quarter: formal check-in; adjust initiatives if off-track
+→ End of quarter: final scoring + learnings</pre>
+</div>
+
+<div class="section" id="scoring">
+  <div class="section-label">Reference</div>
+  <h2><em>Scoring</em> OKRs</h2>
+  <pre>Standard 0.0–1.0 scale:
+0.0 → No progress made
+0.3 → Made a start; far from target
+0.7 → Significant progress; close to target (aspirational sweet spot)
+1.0 → Fully achieved
+
+Grading aspirational OKRs:
+0.7 = "We did great" (stretch goal reached)
+1.0 = "Too easy — set a harder goal next quarter"
+&lt;0.4 = "We have a problem to understand"
+
+Grading committed OKRs:
+1.0 = Expected
+&lt;0.7 = Problem requiring explanation and retrospective
+
+Mid-quarter adjustment:
+→ KR clearly unachievable (&lt;0.2 mid-quarter) → mark failed, pivot
+→ KR easily achievable (0.9 mid-quarter) → set a stretch extension
+→ Context changed significantly → formally revise with stakeholder notice</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>KRs as task lists</td><td>"Launch feature X, run 3 workshops, write 5 docs" — outputs, not outcomes</td><td>KRs measure the change in the world, not the activity</td></tr>
+    <tr><td>Too many OKRs</td><td>Team can't focus; every sprint is scattered</td><td>1 Objective, 3–5 KRs maximum per team per quarter</td></tr>
+    <tr><td>OKRs as performance review</td><td>Teams set easy targets to score 1.0 every quarter</td><td>Never link OKR scores to compensation or performance ratings</td></tr>
+    <tr><td>100% top-down cascade</td><td>Teams feel no ownership; OKRs feel imposed</td><td>40–60% of team OKRs should be team-generated</td></tr>
+    <tr><td>No mid-quarter check-in</td><td>Quarter ends; team realises they've been off-track for weeks</td><td>Weekly KR score updates; formal mid-quarter review</td></tr>
+    <tr><td>Sprint Goals disconnected from OKRs</td><td>Teams sprint furiously but don't move any KRs</td><td>Every Sprint Goal should explicitly reference the KR it serves</td></tr>
+    <tr><td>Vanity KRs</td><td>"10,000 sign-ups" when conversion is 0% — growth without value</td><td>Paired KRs: leading metric (sign-ups) + quality metric (activation rate)</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>OKR <em>Cheat Sheet</em></h2>
+  <pre>Structure
+O  → Inspirational qualitative goal (what we want to achieve)
+KR → Quantitative outcome metric (how we'll know we got there)
+Initiative → Backlog items that drive the KR (not part of the OKR)
+
+Writing rules
+Objective: "We will [verb] [outcome] [for whom]"
+Key Result: "[Verb] [metric] from [baseline] to [target]"
+3–5 KRs per Objective; 1 Objective per team per quarter
+
+Scoring
+0.0 = no progress · 0.3 = started · 0.7 = great (aspirational)
+0.7 = aspirational target · 1.0 = committed target
+
+Cadence
+Weekly   → PO updates KR scores
+Sprint   → Sprint Goal references OKR; Review checks KR progress
+Monthly  → formal OKR check-in; adjust initiatives
+Quarterly → score + learnings; set next quarter's OKRs
+
+Anti-pattern test
+→ Can you score the KR without judgement? (If subjective → rewrite)
+→ Does the KR measure the outcome, not the activity?
+→ Would achieving this KR at 0.7 feel meaningful to the business?</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-okrs · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>

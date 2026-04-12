@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LeSS — Large-Scale Scrum Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}
+  nav a{color:var(--muted)}
+  nav a:hover{color:var(--text);text-decoration:none}
+  nav .spacer{flex:1}
+  nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat{text-align:center}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}
+  .stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}
+  .sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}
+  .sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}
+  .sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}
+  .section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}
+  h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.25rem}
+  .card .icon{font-size:1.5rem;margin-bottom:.5rem}
+  .card .title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+  .card .desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+  .card .tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);padding:.15rem .5rem;font-family:'Courier New',monospace;font-size:.65rem;color:var(--muted);border-radius:3px;margin-top:.5rem}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}
+  .callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  .principle-list{display:grid;gap:.75rem;margin:1.5rem 0}
+  .principle{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1rem 1.25rem;display:flex;gap:1rem;align-items:flex-start}
+  .principle .num{background:var(--accent);color:#000;font-family:'Courier New',monospace;font-size:.7rem;font-weight:bold;padding:.2rem .5rem;border-radius:3px;white-space:nowrap;margin-top:.2rem}
+  .principle .body .title{font-weight:600;font-size:.9rem;margin-bottom:.25rem}
+  .principle .body .desc{font-size:.8rem;color:var(--muted)}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}.stats{gap:1rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span>
+  <span class="breadcrumb">/</span>
+  <span>agile-less</span>
+  <span class="spacer"></span>
+  <a href="#principles">Principles</a>
+  <a href="#rules">Rules</a>
+  <a href="#less-huge">LeSS Huge</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-less" class="gh">GitHub ↗</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">agile / agile-less · v1.0</div>
+  <h1>Large-Scale Scrum <em>(LeSS)</em> Reference</h1>
+  <p>Scaling Scrum across multiple teams with minimal overhead — no new roles, no new artefacts, just more Scrum done right.</p>
+  <div class="hero-links">
+    <a href="#principles">Principles →</a>
+    <a href="#rules" class="ghost">Rules</a>
+    <a href="#less-huge" class="ghost">LeSS Huge</a>
+    <a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">10</div><div class="label">LeSS principles</div></div>
+  <div class="stat"><div class="num">2–8</div><div class="label">Teams (basic LeSS)</div></div>
+  <div class="stat"><div class="num">8+</div><div class="label">Teams (LeSS Huge)</div></div>
+  <div class="stat"><div class="num">1</div><div class="label">Product Backlog</div></div>
+</div>
+
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul>
+    <li><a href="#overview">What is LeSS?</a></li>
+    <li><a href="#principles">10 principles</a></li>
+    <li><a href="#less-vs-safe">LeSS vs SAFe</a></li>
+  </ul>
+  <h3>Structure</h3>
+  <ul>
+    <li><a href="#roles">Roles</a></li>
+    <li><a href="#backlog">One product backlog</a></li>
+    <li><a href="#teams">Feature teams</a></li>
+  </ul>
+  <h3>Events</h3>
+  <ul>
+    <li><a href="#sprint-planning">Sprint Planning 1 &amp; 2</a></li>
+    <li><a href="#daily">Daily Scrum</a></li>
+    <li><a href="#review">Sprint Review (Bazaar)</a></li>
+    <li><a href="#retro">Retrospective</a></li>
+  </ul>
+  <h3>LeSS Huge</h3>
+  <ul>
+    <li><a href="#less-huge">LeSS Huge overview</a></li>
+    <li><a href="#requirement-areas">Requirement Areas</a></li>
+  </ul>
+  <h3>Reference</h3>
+  <ul>
+    <li><a href="#anti-patterns">Anti-patterns</a></li>
+    <li><a href="#cheatsheet">Cheat sheet</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+
+<div class="section" id="overview">
+  <div class="section-label">Foundation</div>
+  <h2>What is <em>LeSS</em>?</h2>
+  <p>LeSS (Large-Scale Scrum) is a framework for scaling Scrum to multiple teams working on a single product. The core philosophy is radical simplicity: rather than adding new processes, roles, and artefacts, LeSS asks "why can't we use Scrum as-is?" and only adds what is truly necessary.</p>
+  <p>LeSS is built on the premise that most scaling problems are really organisational problems — component teams, technical silos, and handoff culture — that new processes cannot solve. The solution is usually to change the organisation.</p>
+  <div class="callout"><strong>LeSS in one sentence:</strong> One Product Owner, one Product Backlog, one Definition of Done, one potentially shippable product Increment every Sprint — produced by multiple teams working together.</div>
+</div>
+
+<div class="section" id="principles">
+  <div class="section-label">Foundation</div>
+  <h2>The 10 LeSS <em>Principles</em></h2>
+  <div class="principle-list">
+    <div class="principle"><div class="num">01</div><div class="body"><div class="title">Large-Scale Scrum is Scrum</div><div class="desc">Not a scaled version of Scrum, not Scrum-inspired. It is Scrum applied to multiple teams on one product.</div></div></div>
+    <div class="principle"><div class="num">02</div><div class="body"><div class="title">Empirical Process Control</div><div class="desc">Transparency, inspection, and adaptation at every level — team and product.</div></div></div>
+    <div class="principle"><div class="num">03</div><div class="body"><div class="title">Transparency</div><div class="desc">One backlog, one Definition of Done, shared learning across teams. No hidden status.</div></div></div>
+    <div class="principle"><div class="num">04</div><div class="body"><div class="title">More with LeSS</div><div class="desc">Fewer roles, fewer artefacts, fewer processes. Simplicity delivers more value than complexity.</div></div></div>
+    <div class="principle"><div class="num">05</div><div class="body"><div class="title">Whole-Product Focus</div><div class="desc">Teams work on features that span components. Avoid component teams and fake hand-offs.</div></div></div>
+    <div class="principle"><div class="num">06</div><div class="body"><div class="title">Customer-Centric</div><div class="desc">Understand what creates customer value. Organise work around customer problems, not components.</div></div></div>
+    <div class="principle"><div class="num">07</div><div class="body"><div class="title">Continuous Improvement towards Perfection</div><div class="desc">Inspect and adapt every Sprint. Perfect the product and the way of working simultaneously.</div></div></div>
+    <div class="principle"><div class="num">08</div><div class="body"><div class="title">Lean Thinking</div><div class="desc">Eliminate waste. Systems thinking. Optimise the whole, not local parts.</div></div></div>
+    <div class="principle"><div class="num">09</div><div class="body"><div class="title">Systems Thinking</div><div class="desc">Understand the whole system. Local optimisations often degrade overall performance.</div></div></div>
+    <div class="principle"><div class="num">10</div><div class="body"><div class="title">Queuing Theory</div><div class="desc">Manage WIP. Small batches. Reduce variability. Little's Law applies at scale too.</div></div></div>
+  </div>
+</div>
+
+<div class="section" id="roles">
+  <div class="section-label">Structure</div>
+  <h2>Roles — <em>No New Ones</em></h2>
+  <p>LeSS has the same three roles as Scrum. No ART, no RTE, no Chief Product Owner below LeSS Huge threshold.</p>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🎯</div><div class="title">Product Owner</div><div class="desc">One PO. One Product Backlog. Works with all teams. Cannot delegate PO responsibilities to team members.</div><div class="tag">1 per product</div></div>
+    <div class="card"><div class="icon">🛡</div><div class="title">Scrum Master</div><div class="desc">1–3 teams per SM. Focus on system improvement, not team-level mechanics. Coaches the org, not just the teams.</div><div class="tag">1 per 1–3 teams</div></div>
+    <div class="card"><div class="icon">🛠</div><div class="title">Developers</div><div class="desc">Cross-functional feature teams. Self-organising. No component-team isolation. Shared code ownership.</div><div class="tag">All teams</div></div>
+  </div>
+  <div class="callout"><strong>No "Team Lead" or "Tech Lead" role in LeSS.</strong> Coordination happens peer-to-peer, not through hierarchy. If a tech lead is needed, something structural needs fixing.</div>
+</div>
+
+<div class="section" id="backlog">
+  <div class="section-label">Structure</div>
+  <h2>One <em>Product Backlog</em></h2>
+  <p>The single most important structural rule in LeSS: there is only one Product Backlog, owned by one Product Owner. Teams pull from this shared backlog based on capacity and skill.</p>
+  <pre>One Product Backlog for all teams
+→ Prioritised by business value by the Product Owner
+→ Items refined in multi-team refinement sessions
+→ Teams select items at Sprint Planning 1 (self-organising)
+→ No "team backlogs" — those are just Sprint Backlogs
+
+Product Backlog Item (PBI) readiness checklist:
+✓ Customer problem and acceptance criteria clear
+✓ Split small enough for one team to complete in one Sprint
+✓ Dependencies with other PBIs identified
+✓ Estimation consistent across teams</pre>
+</div>
+
+<div class="section" id="sprint-planning">
+  <div class="section-label">Events</div>
+  <h2>Sprint <em>Planning</em></h2>
+  <p>LeSS has a unique two-part Sprint Planning designed for multi-team coordination without a coordinator role.</p>
+  <h3>Sprint Planning 1 — What?</h3>
+  <p>All teams together. PO discusses the top items. Teams self-select which PBIs to work on. Items that require coordination across teams are identified. Multi-team work is agreed.</p>
+  <pre>Sprint Planning 1 (whole ART, 1–2 hours)
+→ PO presents top Product Backlog items
+→ Teams volunteer for PBIs based on capacity
+→ Dependencies between teams surfaced and planned
+→ Multi-team items: teams agree who does what
+→ Each team takes their selected items away</pre>
+  <h3>Sprint Planning 2 — How?</h3>
+  <p>Each team plans independently. Teams may invite members of other teams when cross-team design is needed.</p>
+  <pre>Sprint Planning 2 (per team, up to 2 hours)
+→ Team creates Sprint Goal
+→ Breaks PBIs into tasks
+→ Identifies cross-team coordination points
+→ Shared planning optional: teams co-locate if needed</pre>
+</div>
+
+<div class="section" id="review">
+  <div class="section-label">Events</div>
+  <h2>Sprint Review — <em>The Bazaar</em></h2>
+  <p>In LeSS, the Sprint Review often uses the Bazaar (or Open Space) format — teams set up demonstration stations and stakeholders walk around, interacting with each team's work. This scales better than a single sequential demo.</p>
+  <pre>Sprint Review Bazaar format:
+→ Each team sets up a station with their working software
+→ Stakeholders circulate freely, interact with any team
+→ PO and teams capture feedback in real time
+→ Product Backlog adjusted based on stakeholder input
+→ Duration scales with number of teams (30 min/team max)</pre>
+  <div class="callout info"><strong>Alternative:</strong> For tightly-coupled work, a single integrated demo works better. Use the format that creates the most genuine stakeholder feedback.</div>
+</div>
+
+<div class="section" id="retro">
+  <div class="section-label">Events</div>
+  <h2><em>Retrospective</em> Structure</h2>
+  <p>LeSS has two retrospective levels — team and overall. The overall retrospective is the key scaling mechanism for process improvement.</p>
+  <table>
+    <tr><th>Retrospective</th><th>Who</th><th>Focus</th><th>Timebox</th></tr>
+    <tr><td>Team Retrospective</td><td>Each team separately</td><td>Team-specific improvements; sprint execution</td><td>45 min/week of Sprint</td></tr>
+    <tr><td>Overall Retrospective</td><td>PO + SM + team reps</td><td>Cross-team issues; organisational impediments; systemic problems</td><td>1–2 hours</td></tr>
+  </table>
+  <div class="callout"><strong>Overall Retro timing:</strong> After all team retros are complete. Representatives bring issues that cannot be solved within a single team. The PO and SM are both present and empowered to commit to changes.</div>
+</div>
+
+<div class="section" id="less-huge">
+  <div class="section-label">Scale</div>
+  <h2>LeSS <em>Huge</em></h2>
+  <p>For products with more than 8 teams (roughly 50–100+ people), LeSS Huge adds one structural element: Requirement Areas and Area Product Owners.</p>
+  <div class="card-grid">
+    <div class="card"><div class="icon">🗺</div><div class="title">Requirement Areas</div><div class="desc">Large customer-centric areas of a product. 4–8 teams per area. Defined by customer needs, not components.</div><div class="tag">Structure</div></div>
+    <div class="card"><div class="icon">🎯</div><div class="title">Area Product Owner</div><div class="desc">Manages an Area Product Backlog for their Requirement Area. Reports to the overall Product Owner.</div><div class="tag">Role</div></div>
+    <div class="card"><div class="icon">📋</div><div class="title">Area Product Backlog</div><div class="desc">A specialisation of the overall Product Backlog for one Requirement Area. One per area.</div><div class="tag">Artefact</div></div>
+    <div class="card"><div class="icon">🛡</div><div class="title">Scrum Masters</div><div class="desc">Still 1 per 1–3 teams. No "chief SM" role. SMs coordinate peer-to-peer across areas.</div><div class="tag">Role</div></div>
+  </div>
+  <div class="callout"><strong>LeSS Huge still uses one overall Product Backlog.</strong> The Area Product Backlogs are views into it, not separate silos.</div>
+</div>
+
+<div class="section" id="less-vs-safe">
+  <div class="section-label">Comparison</div>
+  <h2>LeSS <em>vs SAFe</em></h2>
+  <table>
+    <tr><th>Dimension</th><th>LeSS</th><th>SAFe</th></tr>
+    <tr><td>New roles</td><td>None (below LeSS Huge)</td><td>RTE, System Architect, Product Management, Business Owners</td></tr>
+    <tr><td>Cadence</td><td>Sprint (2 weeks)</td><td>Sprint + PI (8–12 weeks)</td></tr>
+    <tr><td>Synchronisation</td><td>One shared Sprint</td><td>PI Planning event</td></tr>
+    <tr><td>Product Backlogs</td><td>1 (always)</td><td>Program Backlog + Team Backlogs</td></tr>
+    <tr><td>Organisational change</td><td>High (eliminates component teams)</td><td>Lower (overlays on existing org)</td></tr>
+    <tr><td>Best for</td><td>True product companies, ≤8 teams</td><td>Large enterprises, existing hierarchy</td></tr>
+    <tr><td>Overhead</td><td>Minimal</td><td>Significant</td></tr>
+  </table>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2>LeSS <em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>Component teams</td><td>Teams can only work on their component; features require coordination</td><td>Reorganise into cross-functional feature teams</td></tr>
+    <tr><td>Multiple Product Owners</td><td>"LeSS" with one PO per team is just parallel Scrum</td><td>One PO, one Product Backlog, always</td></tr>
+    <tr><td>Fake LeSS over hierarchy</td><td>LeSS labels on command-and-control organisation</td><td>Structural change is required; LeSS exposes organisational dysfunction</td></tr>
+    <tr><td>Skipping Overall Retro</td><td>Systemic issues never surface; each team firefights alone</td><td>Overall Retro is non-negotiable; it is the improvement engine for the system</td></tr>
+    <tr><td>SM as team coordinator</td><td>SM micromanages cross-team work</td><td>Teams self-coordinate peer-to-peer; SM removes system impediments</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>LeSS <em>Cheat Sheet</em></h2>
+  <pre>Rules (non-negotiable)
+→ One Product Owner; one Product Backlog; one Sprint for all teams
+→ One Definition of Done for the whole product
+→ One potentially shippable Product Increment per Sprint
+→ No component teams; cross-functional feature teams only
+
+Events
+Sprint Planning 1 → all teams + PO; self-select PBIs
+Sprint Planning 2 → per team; break into tasks
+Daily Scrum → per team (coordinate cross-team ad hoc)
+Sprint Review → Bazaar format with stakeholders
+Team Retro → each team separately
+Overall Retro → PO + SM + reps after team retros
+
+LeSS Huge (8+ teams)
+→ Requirement Areas (customer-centric groupings)
+→ Area Product Owner per area
+→ Area Product Backlog (view of overall backlog)
+→ No "Chief SM" or new coordination roles
+
+Scaling rule of thumb
+2–8 teams → LeSS (basic)
+8+ teams  → LeSS Huge
+Hundreds  → consider multiple products</pre>
+</div>
+
+</div>
+</div>
+
+<footer>
+  agile / agile-less · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>
+  PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a>
+</footer>
+</body>
+</html>

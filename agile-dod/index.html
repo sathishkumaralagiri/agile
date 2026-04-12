@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Definition of Done Reference</title>
+<style>
+  :root{--bg:#0a0a0a;--surface:#111;--border:#222;--text:#e8e8e8;--muted:#888;--accent:#f59e0b;--accent2:#3b82f6;--code-bg:#1a1a1a;--tag-bg:#1e1e1e}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;gap:1.5rem;font-family:'Courier New',monospace;font-size:.8rem;backdrop-filter:blur(8px)}
+  nav .breadcrumb{color:var(--muted)}nav a{color:var(--muted)}nav a:hover{color:var(--text);text-decoration:none}nav .spacer{flex:1}nav .gh{color:var(--accent);font-weight:bold}
+  .hero{padding:5rem 2rem 3rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .hero .eyebrow{font-family:'Courier New',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:1.1rem;max-width:65ch;margin-bottom:2rem}
+  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem}
+  .hero-links a{background:var(--accent);color:#000;padding:.5rem 1.25rem;font-family:'Courier New',monospace;font-size:.8rem;font-weight:bold;border-radius:3px}
+  .hero-links a.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .stats{display:flex;flex-wrap:wrap;gap:2rem;padding:2rem;max-width:900px;margin:0 auto;border-bottom:1px solid var(--border)}
+  .stat .num{font-size:2rem;font-weight:700;color:var(--accent);font-family:'Courier New',monospace}.stat .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:900px;margin:0 auto}
+  .sidebar{padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+  .sidebar h3{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:1.5rem 0 .5rem}.sidebar h3:first-child{margin-top:0}
+  .sidebar ul{list-style:none}.sidebar ul li a{display:block;padding:.25rem 0;font-size:.85rem;color:var(--muted)}.sidebar ul li a:hover{color:var(--text);text-decoration:none}
+  .content{padding:2.5rem 2rem;min-width:0}
+  .section{margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid var(--border)}.section:last-child{border-bottom:none}
+  .section-label{font-family:'Courier New',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+  h2{font-size:1.6rem;font-weight:400;margin-bottom:1.25rem;line-height:1.25}h2 em{font-style:italic;color:var(--accent)}
+  h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .75rem}
+  p{color:var(--muted);margin-bottom:1rem;max-width:72ch}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:1rem 0;color:#a8d8a8}
+  .callout{border-left:3px solid var(--accent);padding:.75rem 1rem;background:rgba(245,158,11,.05);border-radius:0 6px 6px 0;margin:1.25rem 0;font-size:.9rem;color:var(--muted)}
+  .callout.info{border-color:var(--accent2);background:rgba(59,130,246,.05)}.callout strong{color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+  th{text-align:left;padding:.6rem .75rem;background:var(--surface);border:1px solid var(--border);font-family:'Courier New',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  td{padding:.6rem .75rem;border:1px solid var(--border);color:var(--muted);vertical-align:top}
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:'Courier New',monospace;font-size:.75rem;color:var(--muted);max-width:900px;margin:0 auto}
+  @media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="breadcrumb"><a href="../">agile</a></span><span class="breadcrumb">/</span><span>agile-dod</span>
+  <span class="spacer"></span>
+  <a href="#principles">Principles</a><a href="#examples">Examples</a><a href="#levels">Levels</a>
+  <a href="https://github.com/sathishkumaralagiri/agile/tree/main/agile-dod" class="gh">GitHub ↗</a>
+</nav>
+<div class="hero">
+  <div class="eyebrow">agile / agile-dod · v1.0</div>
+  <h1>Definition of <em>Done</em></h1>
+  <p>Building a strong DoD — what it must include, how it differs by team type, common anti-patterns, and ready-to-use examples by context.</p>
+  <div class="hero-links">
+    <a href="#principles">Principles →</a><a href="#examples" class="ghost">Examples</a><a href="#levels" class="ghost">Levels</a><a href="#cheatsheet" class="ghost">Cheat sheet</a>
+  </div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="num">3</div><div class="label">DoD levels</div></div>
+  <div class="stat"><div class="num">4</div><div class="label">Team type examples</div></div>
+  <div class="stat"><div class="num">0</div><div class="label">Exceptions (ever)</div></div>
+  <div class="stat"><div class="num">7</div><div class="label">Anti-patterns</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <h3>Foundation</h3>
+  <ul><li><a href="#principles">What DoD does</a></li><li><a href="#dod-vs-ac">DoD vs Acceptance Criteria</a></li></ul>
+  <h3>Examples</h3>
+  <ul><li><a href="#examples">Product team DoD</a></li><li><a href="#mobile">Mobile team DoD</a></li><li><a href="#data">Data / ML team DoD</a></li><li><a href="#platform">Platform team DoD</a></li></ul>
+  <h3>Structure</h3>
+  <ul><li><a href="#levels">Three levels</a></li><li><a href="#building">Building your DoD</a></li><li><a href="#scaling">DoD at scale</a></li></ul>
+  <h3>Reference</h3>
+  <ul><li><a href="#anti-patterns">Anti-patterns</a></li><li><a href="#cheatsheet">Cheat sheet</a></li></ul>
+</nav>
+<div class="content">
+
+<div class="section" id="principles">
+  <div class="section-label">Foundation</div>
+  <h2>What the DoD <em>Does</em></h2>
+  <p>The Definition of Done is a formal, shared, non-negotiable list of quality criteria that every Product Backlog Item must meet before it is considered complete. It is the Scrum Team's commitment to quality — applied to every single item, every single sprint.</p>
+  <p>The DoD creates transparency: it makes the concept of "Done" unambiguous. Without it, different people have different standards — and teams accumulate hidden undone work that eventually surfaces as bugs, incidents, or missed features.</p>
+  <div class="callout"><strong>The DoD is non-negotiable.</strong> An item that doesn't meet the DoD cannot be presented at the Sprint Review and must return to the Product Backlog. No exceptions, no "good enough for now."</div>
+</div>
+
+<div class="section" id="dod-vs-ac">
+  <div class="section-label">Foundation</div>
+  <h2>DoD vs <em>Acceptance Criteria</em></h2>
+  <table>
+    <tr><th>Dimension</th><th>Definition of Done</th><th>Acceptance Criteria</th></tr>
+    <tr><td>Scope</td><td>Applies to ALL items in every sprint</td><td>Specific to one story</td></tr>
+    <tr><td>Who sets it</td><td>The Scrum Team (created once; evolves)</td><td>Product Owner + team (per story)</td></tr>
+    <tr><td>Content</td><td>Engineering quality standards</td><td>Business / functional requirements</td></tr>
+    <tr><td>Example</td><td>"Unit tests written and passing"</td><td>"User sees error if email is invalid"</td></tr>
+    <tr><td>Changes?</td><td>Evolves slowly (DoD gets stronger over time)</td><td>Changes per story</td></tr>
+  </table>
+  <div class="callout info">An item must meet <strong>both</strong> the DoD AND its own Acceptance Criteria to be declared Done.</div>
+</div>
+
+<div class="section" id="examples">
+  <div class="section-label">Examples</div>
+  <h2>Product Team <em>DoD</em> (web application)</h2>
+  <pre>✓ Code reviewed by at least one other developer
+✓ Unit tests written and passing (coverage ≥ 80% on new code)
+✓ Integration tests written and passing
+✓ No new linting / static analysis violations
+✓ Accessibility: WCAG 2.1 AA for any UI changes
+✓ No known critical or high-severity bugs introduced
+✓ Feature flag configured if applicable
+✓ Deployed to staging environment
+✓ PO demonstrated working software; AC verified
+✓ Monitoring / alerting updated if new endpoints added
+✓ Documentation updated (API docs, README, runbook as applicable)</pre>
+</div>
+
+<div class="section" id="mobile">
+  <div class="section-label">Examples</div>
+  <h2>Mobile Team <em>DoD</em> (iOS / Android)</h2>
+  <pre>✓ Code reviewed and approved by at least one engineer
+✓ Unit tests written and passing
+✓ UI snapshot tests updated if layout changed
+✓ Tested on minimum supported OS version (iOS 16+ / Android 10+)
+✓ Tested on at least 2 physical device form factors
+✓ No new memory leaks (profiler run)
+✓ Accessibility: VoiceOver / TalkBack compatible for new UI
+✓ Strings externalised (no hard-coded copy in code)
+✓ Crash-free rate maintained (no regression in staging)
+✓ Submitted to TestFlight / Internal Track; PO verified</pre>
+</div>
+
+<div class="section" id="data">
+  <div class="section-label">Examples</div>
+  <h2>Data / ML Team <em>DoD</em></h2>
+  <pre>✓ Data pipeline tested with real + synthetic edge-case data
+✓ Data quality checks implemented (null rates, schema validation)
+✓ Model accuracy meets agreed threshold on holdout set
+✓ Bias / fairness evaluation completed and documented
+✓ Feature logic reviewed by another engineer + domain expert
+✓ Data lineage documented
+✓ Monitoring / data quality alerts configured
+✓ Model card or feature documentation updated
+✓ Rollback plan defined for model updates
+✓ PO demonstrated output meets acceptance criteria</pre>
+</div>
+
+<div class="section" id="platform">
+  <div class="section-label">Examples</div>
+  <h2>Platform / Infrastructure Team <em>DoD</em></h2>
+  <pre>✓ Infrastructure changes in code (Terraform / Pulumi / Helm)
+✓ Changes tested in non-production environment first
+✓ Security review completed for any new IAM or network changes
+✓ Runbook created or updated
+✓ Monitoring dashboards and alerts updated
+✓ Cost impact estimated and within budget guardrails
+✓ Change communicated to affected teams
+✓ Rollback procedure tested or documented
+✓ On-call documentation updated</pre>
+</div>
+
+<div class="section" id="levels">
+  <div class="section-label">Structure</div>
+  <h2>Three <em>Levels</em> of Done</h2>
+  <p>In scaled environments, Done has multiple layers. Each layer builds on the one below.</p>
+  <table>
+    <tr><th>Level</th><th>Scope</th><th>What it means</th></tr>
+    <tr><td>Story Done</td><td>One PBI</td><td>Story meets DoD + its own ACs. Reviewed and accepted by PO.</td></tr>
+    <tr><td>Sprint Done</td><td>Sprint Increment</td><td>All stories meet DoD. Increment is integrated, tested, and potentially shippable.</td></tr>
+    <tr><td>Release Done</td><td>Product release</td><td>All release criteria met: load testing, security scan, release notes, stakeholder sign-off.</td></tr>
+  </table>
+  <div class="callout"><strong>In SAFe / LeSS:</strong> add a Program Increment Done level — all ARTs/teams integrated, System Demo completed, release train objectives achieved.</div>
+</div>
+
+<div class="section" id="building">
+  <div class="section-label">Structure</div>
+  <h2>Building Your <em>DoD</em></h2>
+  <pre>Step 1: Start with a team workshop (1–2 hours)
+→ Ask: "What does it mean for work to truly be complete?"
+→ Each person writes items on sticky notes
+→ Group and deduplicate
+→ Vote on must-haves vs nice-to-haves
+
+Step 2: Write it up and post it visibly
+→ Physical board: laminated card next to the Kanban board
+→ Digital: pinned in the team's project tool and Slack channel
+→ Every developer must know it without looking it up
+
+Step 3: Apply it immediately
+→ Next sprint: every item is measured against it
+→ First week will be hard — that's the point
+
+Step 4: Strengthen it each retro
+→ Question: "Did the DoD prevent any issues this sprint?"
+→ Question: "What quality problems emerged that the DoD would have caught?"
+→ Add items when gaps are found; never remove without team agreement</pre>
+</div>
+
+<div class="section" id="scaling">
+  <div class="section-label">Structure</div>
+  <h2>DoD <em>at Scale</em></h2>
+  <pre>Multiple teams on one product (LeSS / SAFe):
+→ One shared DoD for the whole product (minimum standard)
+→ Teams can ADD to the shared DoD; cannot remove items
+→ "Sprint Done" must include cross-team integration
+→ System Demo (SAFe) / Sprint Review Bazaar (LeSS) validates combined increment
+
+Component teams vs feature teams:
+→ Component teams need additional DoD items for interfaces and contracts
+→ Feature teams use the standard product DoD
+
+DoD maturity progression:
+Month 1  → Basic: code review + unit tests + PO accepted
+Month 3  → Add: integration tests + staging deploy + no critical bugs
+Month 6  → Add: performance baseline + security scan + monitoring
+Year 1+  → Add: chaos engineering, load testing, accessibility audits</pre>
+</div>
+
+<div class="section" id="anti-patterns">
+  <div class="section-label">Reference</div>
+  <h2><em>Anti-Patterns</em></h2>
+  <table>
+    <tr><th>Anti-Pattern</th><th>Problem</th><th>Fix</th></tr>
+    <tr><td>DoD bypassed under pressure</td><td>"Just this once" destroys the standard; becomes the norm</td><td>DoD is non-negotiable. Reduce scope instead.</td></tr>
+    <tr><td>DoD not visible</td><td>Team forgets items; inconsistent application</td><td>Post physically + digitally. Reference in every sprint review.</td></tr>
+    <tr><td>DoD as manager's checklist</td><td>Developers feel policed, not empowered</td><td>Team owns the DoD. It is their standard, not management's.</td></tr>
+    <tr><td>Acceptance criteria confused with DoD</td><td>Story-specific ACs treated as universal quality standard</td><td>DoD = universal; ACs = story-specific. Both required.</td></tr>
+    <tr><td>DoD never strengthened</td><td>Team stops improving; debt accumulates in gaps</td><td>Review and strengthen the DoD at every retrospective</td></tr>
+    <tr><td>DoD too aspirational at start</td><td>Team fails every item; morale drops; ignored</td><td>Start with 4–5 achievable items; add progressively</td></tr>
+    <tr><td>No shared DoD at scale</td><td>Teams have different standards; integration reveals gaps</td><td>One shared DoD for the product; teams can only add, not remove</td></tr>
+  </table>
+</div>
+
+<div class="section" id="cheatsheet">
+  <div class="section-label">Reference</div>
+  <h2>DoD <em>Cheat Sheet</em></h2>
+  <pre>What the DoD is
+→ Formal, shared quality criteria applied to EVERY item, EVERY sprint
+→ Non-negotiable — no exceptions, no "good enough"
+→ Owned by the team; strengthened at retrospectives
+
+DoD vs Acceptance Criteria
+DoD  → applies to all items; engineering quality standard
+ACs  → story-specific; functional requirements
+
+Minimum viable DoD (start here)
+✓ Code reviewed by at least one other developer
+✓ Unit tests written and passing
+✓ Deployed to staging / test environment
+✓ PO verified against acceptance criteria
+✓ No known critical bugs introduced
+
+Levels of Done
+Story Done    → DoD + ACs met; PO accepted
+Sprint Done   → All stories done; Increment integrated + shippable
+Release Done  → Load test, security, release notes, stakeholder sign-off
+
+Golden rule
+When in doubt: reduce scope, not quality.
+Never ship undone work. Never skip the DoD.</pre>
+</div>
+
+</div>
+</div>
+<footer>agile / agile-dod · <a href="../agile-metrics/LICENSE">CC BY 4.0</a> · 2026<br>PRs welcome · <a href="https://github.com/sathishkumaralagiri/agile">GitHub ↗</a></footer>
+</body>
+</html>
